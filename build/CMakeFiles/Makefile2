@@ -65,39 +65,39 @@ CMAKE_SOURCE_DIR = /home/paul/work/CV/DIP100
 CMAKE_BINARY_DIR = /home/paul/work/CV/DIP100/build
 
 #=============================================================================
-# Target rules for target CMakeFiles/t6.dir
+# Target rules for target CMakeFiles/t8.dir
 
 # All Build rule for target.
-CMakeFiles/t6.dir/all:
-	$(MAKE) -f CMakeFiles/t6.dir/build.make CMakeFiles/t6.dir/depend
-	$(MAKE) -f CMakeFiles/t6.dir/build.make CMakeFiles/t6.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/paul/work/CV/DIP100/build/CMakeFiles --progress-num=1,2 "Built target t6"
-.PHONY : CMakeFiles/t6.dir/all
+CMakeFiles/t8.dir/all:
+	$(MAKE) -f CMakeFiles/t8.dir/build.make CMakeFiles/t8.dir/depend
+	$(MAKE) -f CMakeFiles/t8.dir/build.make CMakeFiles/t8.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/paul/work/CV/DIP100/build/CMakeFiles --progress-num=1,2 "Built target t8"
+.PHONY : CMakeFiles/t8.dir/all
 
 # Include target in all.
-all: CMakeFiles/t6.dir/all
+all: CMakeFiles/t8.dir/all
 
 .PHONY : all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/t6.dir/rule: cmake_check_build_system
+CMakeFiles/t8.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/paul/work/CV/DIP100/build/CMakeFiles 2
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/t6.dir/all
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/t8.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/paul/work/CV/DIP100/build/CMakeFiles 0
-.PHONY : CMakeFiles/t6.dir/rule
+.PHONY : CMakeFiles/t8.dir/rule
 
 # Convenience name for target.
-t6: CMakeFiles/t6.dir/rule
+t8: CMakeFiles/t8.dir/rule
 
-.PHONY : t6
-
-# clean rule for target.
-CMakeFiles/t6.dir/clean:
-	$(MAKE) -f CMakeFiles/t6.dir/build.make CMakeFiles/t6.dir/clean
-.PHONY : CMakeFiles/t6.dir/clean
+.PHONY : t8
 
 # clean rule for target.
-clean: CMakeFiles/t6.dir/clean
+CMakeFiles/t8.dir/clean:
+	$(MAKE) -f CMakeFiles/t8.dir/build.make CMakeFiles/t8.dir/clean
+.PHONY : CMakeFiles/t8.dir/clean
+
+# clean rule for target.
+clean: CMakeFiles/t8.dir/clean
 
 .PHONY : clean
 

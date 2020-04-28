@@ -56,17 +56,6 @@ CMAKE_BINARY_DIR = /home/paul/work/CV/DIP100/build
 #=============================================================================
 # Targets provided globally by CMake.
 
-# Special rule for the target edit_cache
-edit_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
-	/usr/local/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
-.PHONY : edit_cache
-
-# Special rule for the target edit_cache
-edit_cache/fast: edit_cache
-
-.PHONY : edit_cache/fast
-
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
@@ -77,6 +66,17 @@ rebuild_cache:
 rebuild_cache/fast: rebuild_cache
 
 .PHONY : rebuild_cache/fast
+
+# Special rule for the target edit_cache
+edit_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
+	/usr/local/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+.PHONY : edit_cache
+
+# Special rule for the target edit_cache
+edit_cache/fast: edit_cache
+
+.PHONY : edit_cache/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -111,44 +111,44 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named t6
+# Target rules for targets named t8
 
 # Build rule for target.
-t6: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 t6
-.PHONY : t6
+t8: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 t8
+.PHONY : t8
 
 # fast build rule for target.
-t6/fast:
-	$(MAKE) -f CMakeFiles/t6.dir/build.make CMakeFiles/t6.dir/build
-.PHONY : t6/fast
+t8/fast:
+	$(MAKE) -f CMakeFiles/t8.dir/build.make CMakeFiles/t8.dir/build
+.PHONY : t8/fast
 
-t6.o: t6.cpp.o
+t8.o: t8.cpp.o
 
-.PHONY : t6.o
+.PHONY : t8.o
 
 # target to build an object file
-t6.cpp.o:
-	$(MAKE) -f CMakeFiles/t6.dir/build.make CMakeFiles/t6.dir/t6.cpp.o
-.PHONY : t6.cpp.o
+t8.cpp.o:
+	$(MAKE) -f CMakeFiles/t8.dir/build.make CMakeFiles/t8.dir/t8.cpp.o
+.PHONY : t8.cpp.o
 
-t6.i: t6.cpp.i
+t8.i: t8.cpp.i
 
-.PHONY : t6.i
+.PHONY : t8.i
 
 # target to preprocess a source file
-t6.cpp.i:
-	$(MAKE) -f CMakeFiles/t6.dir/build.make CMakeFiles/t6.dir/t6.cpp.i
-.PHONY : t6.cpp.i
+t8.cpp.i:
+	$(MAKE) -f CMakeFiles/t8.dir/build.make CMakeFiles/t8.dir/t8.cpp.i
+.PHONY : t8.cpp.i
 
-t6.s: t6.cpp.s
+t8.s: t8.cpp.s
 
-.PHONY : t6.s
+.PHONY : t8.s
 
 # target to generate assembly for a file
-t6.cpp.s:
-	$(MAKE) -f CMakeFiles/t6.dir/build.make CMakeFiles/t6.dir/t6.cpp.s
-.PHONY : t6.cpp.s
+t8.cpp.s:
+	$(MAKE) -f CMakeFiles/t8.dir/build.make CMakeFiles/t8.dir/t8.cpp.s
+.PHONY : t8.cpp.s
 
 # Help Target
 help:
@@ -156,12 +156,12 @@ help:
 	@echo "... all (the default if no target is provided)"
 	@echo "... clean"
 	@echo "... depend"
-	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... t6"
-	@echo "... t6.o"
-	@echo "... t6.i"
-	@echo "... t6.s"
+	@echo "... edit_cache"
+	@echo "... t8"
+	@echo "... t8.o"
+	@echo "... t8.i"
+	@echo "... t8.s"
 .PHONY : help
 
 
