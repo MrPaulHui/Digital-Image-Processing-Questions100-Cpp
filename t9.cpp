@@ -14,7 +14,7 @@ cv::Mat ZeroPadding(cv::Mat img, int pad_size=1){ //C++也可以直接在函数�
     for(int i=0;i<h;i++){
         for(int j=0;j<w;j++){
             for(int c=0;c<channel;c++){
-                out.at<cv::Vec3b>(i+1,j+1)[c] = img.at<cv::Vec3b>(i,j)[c];
+                out.at<cv::Vec3b>(i+pad_size,j+pad_size)[c] = img.at<cv::Vec3b>(i,j)[c];
             }
         }
     }
