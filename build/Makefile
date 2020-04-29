@@ -56,17 +56,6 @@ CMAKE_BINARY_DIR = /home/paul/work/CV/DIP100/build
 #=============================================================================
 # Targets provided globally by CMake.
 
-# Special rule for the target edit_cache
-edit_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
-	/usr/local/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
-.PHONY : edit_cache
-
-# Special rule for the target edit_cache
-edit_cache/fast: edit_cache
-
-.PHONY : edit_cache/fast
-
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
@@ -77,6 +66,17 @@ rebuild_cache:
 rebuild_cache/fast: rebuild_cache
 
 .PHONY : rebuild_cache/fast
+
+# Special rule for the target edit_cache
+edit_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
+	/usr/local/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+.PHONY : edit_cache
+
+# Special rule for the target edit_cache
+edit_cache/fast: edit_cache
+
+.PHONY : edit_cache/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -111,44 +111,44 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named t10
+# Target rules for targets named t11
 
 # Build rule for target.
-t10: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 t10
-.PHONY : t10
+t11: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 t11
+.PHONY : t11
 
 # fast build rule for target.
-t10/fast:
-	$(MAKE) -f CMakeFiles/t10.dir/build.make CMakeFiles/t10.dir/build
-.PHONY : t10/fast
+t11/fast:
+	$(MAKE) -f CMakeFiles/t11.dir/build.make CMakeFiles/t11.dir/build
+.PHONY : t11/fast
 
-t10.o: t10.cpp.o
+t11.o: t11.cpp.o
 
-.PHONY : t10.o
+.PHONY : t11.o
 
 # target to build an object file
-t10.cpp.o:
-	$(MAKE) -f CMakeFiles/t10.dir/build.make CMakeFiles/t10.dir/t10.cpp.o
-.PHONY : t10.cpp.o
+t11.cpp.o:
+	$(MAKE) -f CMakeFiles/t11.dir/build.make CMakeFiles/t11.dir/t11.cpp.o
+.PHONY : t11.cpp.o
 
-t10.i: t10.cpp.i
+t11.i: t11.cpp.i
 
-.PHONY : t10.i
+.PHONY : t11.i
 
 # target to preprocess a source file
-t10.cpp.i:
-	$(MAKE) -f CMakeFiles/t10.dir/build.make CMakeFiles/t10.dir/t10.cpp.i
-.PHONY : t10.cpp.i
+t11.cpp.i:
+	$(MAKE) -f CMakeFiles/t11.dir/build.make CMakeFiles/t11.dir/t11.cpp.i
+.PHONY : t11.cpp.i
 
-t10.s: t10.cpp.s
+t11.s: t11.cpp.s
 
-.PHONY : t10.s
+.PHONY : t11.s
 
 # target to generate assembly for a file
-t10.cpp.s:
-	$(MAKE) -f CMakeFiles/t10.dir/build.make CMakeFiles/t10.dir/t10.cpp.s
-.PHONY : t10.cpp.s
+t11.cpp.s:
+	$(MAKE) -f CMakeFiles/t11.dir/build.make CMakeFiles/t11.dir/t11.cpp.s
+.PHONY : t11.cpp.s
 
 # Help Target
 help:
@@ -156,12 +156,12 @@ help:
 	@echo "... all (the default if no target is provided)"
 	@echo "... clean"
 	@echo "... depend"
-	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... t10"
-	@echo "... t10.o"
-	@echo "... t10.i"
-	@echo "... t10.s"
+	@echo "... edit_cache"
+	@echo "... t11"
+	@echo "... t11.o"
+	@echo "... t11.i"
+	@echo "... t11.s"
 .PHONY : help
 
 
