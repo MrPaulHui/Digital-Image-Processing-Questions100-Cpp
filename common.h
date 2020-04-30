@@ -1,14 +1,14 @@
 #pragma once
-cv::Mat ToGray(cv::Mat img){
+cv::Mat ToGray(cv::Mat img){ //img的格式是bgr
     int h = img.rows;
     int w = img.cols;
     cv::Mat out = cv::Mat::zeros(h, w, CV_8UC1);
     for(int i=0; i<h; i++){
         for(int j=0; j<w; j++){
-            unsigned char r = img.at<cv::Vec3b>(i,j)[0];
+            unsigned char b = img.at<cv::Vec3b>(i,j)[0];
             unsigned char g = img.at<cv::Vec3b>(i,j)[1];
-            unsigned char b = img.at<cv::Vec3b>(i,j)[2];
-            out.at<unsigned char>(i,j) = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+            unsigned char r = img.at<cv::Vec3b>(i,j)[2];
+            out.at<unsigned char>(i,j) = 0.2126 * (double)r + 0.7152 * (double)g + 0.0722 * (double)b;
         }
     }
     return out;
@@ -24,6 +24,18 @@ cv::Mat ZeroPadding(cv::Mat img, int pad_size=1){
             for(int c=0;c<channel;c++){
                 out.at<cv::Vec3b>(i+pad_size,j+pad_size)[c] = img.at<cv::Vec3b>(i,j)[c];
             }
+        }
+    }
+    return out;
+}
+
+cv::Mat ZeroPadding_Gray(cv::Mat img, int pad_size=1){
+    int h = img.rows;
+    int w = img.cols;
+    cv::Mat out = cv::Mat::zeros(h+2*pad_size, w+2*pad_size, CV_8UC1);
+    for(int i=0;i<h;i++){
+        for(int j=0;j<w;j++){
+            out.at<uchar>(i+pad_size,j+pad_size) = img.at<uchar>(i,j);
         }
     }
     return out;
