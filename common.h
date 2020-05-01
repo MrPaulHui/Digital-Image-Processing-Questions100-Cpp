@@ -1,4 +1,5 @@
 #pragma once
+#include <math.h>
 cv::Mat ToGray(cv::Mat img){ //img的格式是bgr
     int h = img.rows;
     int w = img.cols;
@@ -41,7 +42,34 @@ cv::Mat ZeroPadding_Gray(cv::Mat img, int pad_size=1){
     return out;
 }
 
-cv::Mat Conv(cv::Mat img, cv::Mat kernel, bool need_pad=true){
+cv::Mat Conv_Gray(cv::Mat img, cv::Mat kernel, bool need_pad=true, bool need_clip=true){
+    // stride只能为1
+    int k_size = kernel.rows;
+    if(need_pad){
+        img = ZeroPadding_Gray(img, floor(k_size/2));
+    }
+    int height = img.rows;
+    int width = img.cols;
+    cv::Mat out = cv::Mat::zeros(height-k_size+1, width-k_size+1, CV_8UC1);
+    for(int i=0;i<height-k_size+1;i++){
+        for(int j=0;j<width-k_size+1;j++){
+            double sum = 0;
+            for(int ii=0;ii<k_size;ii++){
+                for(int jj=0;jj<k_size;jj++){
+                    sum += kernel.at<double>(ii,jj) * (double)img.at<uchar>(i+ii,j+jj);
+                }
+            }
+            if(need_clip){
+                sum = fmax(sum, 0);
+                sum = fmin(sum, 255); //需要做一手clip，保证像素值范围在0-255
+            }
+            out.at<uchar>(i,j) = (uchar)sum;
+        }
+    }
+    return out;
+}
+
+cv::Mat Conv(cv::Mat img, cv::Mat kernel, bool need_pad=true, bool need_clip=false){
     // stride只能为1
     int k_size = kernel.rows;
     if(need_pad){
@@ -59,6 +87,10 @@ cv::Mat Conv(cv::Mat img, cv::Mat kernel, bool need_pad=true){
                     for(int jj=0;jj<k_size;jj++){
                         sum += kernel.at<double>(ii,jj) * (double)img.at<cv::Vec3b>(i+ii,j+jj)[c];
                     }
+                }
+                if(need_clip){
+                    sum = fmax(sum, 0);
+                    sum = fmin(sum, 255); //需要做一手clip，保证像素值范围在0-255
                 }
                 out.at<cv::Vec3b>(i,j)[c] = (uchar)sum;
             }
