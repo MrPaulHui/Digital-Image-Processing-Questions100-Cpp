@@ -98,3 +98,36 @@ cv::Mat Conv(cv::Mat img, cv::Mat kernel, bool need_pad=true, bool need_clip=fal
     }
     return out;
 }
+
+cv::Mat Clip(cv::Mat img){
+    int height = img.rows;
+    int width = img.cols;
+    int channel = img.channels();
+    double v;
+    if(channel==3){
+        cv::Mat out = cv::Mat::zeros(height, width, CV_8UC3);
+        for(int i=0;i<height;i++){
+            for(int j=0;j<width;j++){
+                for(int c=0;c<channel;c++){
+                    double val = (double)img.at<cv::Vec3b>(i,j)[c];
+                    v = fmax(val, 0);
+                    v = fmin(val, 255);
+                    out.at<cv::Vec3b>(i,j)[c] = (uchar)v;
+                }
+            }
+        }
+        return out;
+    }
+    else{
+        cv::Mat out = cv::Mat::zeros(height, width, CV_8UC1);
+        for(int i=0;i<height;i++){
+            for(int j=0;j<width;j++){
+                double val = (double)img.at<uchar>(i,j);
+                v = fmax(val, 0);
+                v = fmin(val, 255);
+                out.at<uchar>(i,j) = (uchar)v;
+            }
+        }
+        return out;
+    }
+}
