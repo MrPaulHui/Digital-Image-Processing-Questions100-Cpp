@@ -10,6 +10,7 @@
 
 - 返回值是二维数组的函数该怎么定义？
 - 类似python的函数形参列表初始化，只对其中几个赋值怎么办？有关的：https://www.cnblogs.com/jerrybai/p/10693594.html；
+- 函数返回数组的方法：https://www.cnblogs.com/Wade-James/p/7965775.html
 
 ## 几个去噪滤波器的特点，适用的情况
 
@@ -197,3 +198,7 @@ $$
   \nabla^2Guassian_\sigma=\frac{x^2+y^2-\sigma^2}{2\pi\sigma^6}exp(-\frac{x^2+y^2}{2\sigma^2})
   $$
   
+
+## 直方图系列
+
+- C++ opencv绘制直方图库函数方法：https://blog.csdn.net/qq_24282081/article/details/73135799
