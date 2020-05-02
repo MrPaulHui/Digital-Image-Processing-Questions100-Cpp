@@ -213,3 +213,17 @@ $$
   $$
   x_{out}=\begin{cases}a& (\text{if}\quad x_{in}<a)\\\frac{b-a}{d-c}\ (x_{in}-c)+a&(\text{else if}\quad a\leq x_{in}<b)\\b&(\text{else})\end{cases}
   $$
+
+- 直方图均衡化
+
+  参考：https://blog.csdn.net/schwein_van/article/details/84336633
+
+  也是使直方图平坦化，提高图像细节信息和**对比度**。不同于归一化需要计算原始图像数据，均衡化直接对直方图进行操作即可。
+
+  直方图均衡化公式推导：https://blog.csdn.net/schwein_van/article/details/84336633
+
+  涉及到概率论求概率密度函数，主要证明均衡化变换后呈均匀分布。
+
+  
+
+  

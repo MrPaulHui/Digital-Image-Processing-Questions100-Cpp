@@ -133,10 +133,10 @@ cv::Mat Clip(cv::Mat img){
     }
 }
 
-int* CalHist(cv::Mat img){
+double* CalHist(cv::Mat img, bool norm=false){
     //三通道的直方图直接统计所有h×w×c个像素
     //int hist[256] = {0}; //只能初始化为0好像，这个好像不太行？
-    static int hist[256]; //直接这样定义是不行的，因为没有定义成static的，函数执行完，这个hist就会被释放掉，指针找不到数据
+    static double hist[256]; //直接这样定义是不行的，因为没有定义成static的，函数执行完，这个hist就会被释放掉，指针找不到数据
     //参考：https://www.cnblogs.com/Wade-James/p/7965775.html
     for(int i=0;i<256;i++){
         hist[i] = 0;
@@ -151,10 +151,15 @@ int* CalHist(cv::Mat img){
             }
         }
     }
+    if(norm){
+        for(int i=0;i<256;i++){
+            hist[i] /= (height*width*channel); //一般来说直方图是需要除总数，即每个表示比例的
+        }
+    }
     return hist;
 }
 
-void DisplayHist(int* hist, int hist_size=256, int disp_size=512, int x_axis_height=20){
+void DisplayHist(double* hist, int hist_size=256, int disp_size=512, int x_axis_height=20){
     double max_ = 0;
     for(int i=0;i<hist_size;i++){
         if(*(hist+i) > max_){
@@ -179,7 +184,7 @@ void DisplayHist(int* hist, int hist_size=256, int disp_size=512, int x_axis_hei
 }
 
 void Hist(cv::Mat img){
-    int* hist;
+    double* hist;
     hist = CalHist(img);
     DisplayHist(hist);
 }
