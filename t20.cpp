@@ -26,19 +26,24 @@ int* CalHist(cv::Mat img){
     return hist;
 }
 
-void DisplayHist(int* hist, int hist_size=256, int disp_size=512){
+void DisplayHist(int* hist, int hist_size=256, int disp_size=512, int x_axis_height=20){
     double max_ = 0;
     for(int i=0;i<hist_size;i++){
         if(*(hist+i) > max_){
             max_ = *(hist+i);
         }
     }
-    double hpt = 0.8 * (double)disp_size;
+    double hpt = 0.8 * (double)(disp_size-x_axis_height);
     cv::Mat disp(disp_size, disp_size, CV_8UC3, cv::Scalar(255,255,255));
+    //cv::line(disp, cv::Point(0,disp_size-x_axis_height), cv::Point(disp_size,disp_size-x_axis_height),cv::Scalar(0,0,0));
     for(int i=0;i<hist_size;i++){
         double val = *(hist+i);
         int heights = (int)(val/max_*hpt);
-        cv::line(disp, cv::Point(i,disp_size), cv::Point(i,disp_size-heights), cv::Scalar(172, 172, 150)); //需要加上#include "opencv2/imgproc/imgproc.hpp"这个头文件
+        cv::line(disp, cv::Point(i,disp_size-x_axis_height), cv::Point(i,disp_size-x_axis_height-heights), cv::Scalar(172, 172, 150)); //需要加上#include "opencv2/imgproc/imgproc.hpp"这个头文件
+        if(i%50==0){
+            cv::putText(disp, to_string(i), cv::Point(i,disp_size),
+                        cv::FONT_HERSHEY_PLAIN, 1, cv::Scalar(0,0,0));
+        }
     }
     cv::imshow("hist", disp);
     cv::waitKey(0);
