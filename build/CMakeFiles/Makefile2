@@ -65,39 +65,39 @@ CMAKE_SOURCE_DIR = /home/paul/work/CV/DIP100
 CMAKE_BINARY_DIR = /home/paul/work/CV/DIP100/build
 
 #=============================================================================
-# Target rules for target CMakeFiles/t23_more.dir
+# Target rules for target CMakeFiles/t24.dir
 
 # All Build rule for target.
-CMakeFiles/t23_more.dir/all:
-	$(MAKE) -f CMakeFiles/t23_more.dir/build.make CMakeFiles/t23_more.dir/depend
-	$(MAKE) -f CMakeFiles/t23_more.dir/build.make CMakeFiles/t23_more.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/paul/work/CV/DIP100/build/CMakeFiles --progress-num=1,2 "Built target t23_more"
-.PHONY : CMakeFiles/t23_more.dir/all
+CMakeFiles/t24.dir/all:
+	$(MAKE) -f CMakeFiles/t24.dir/build.make CMakeFiles/t24.dir/depend
+	$(MAKE) -f CMakeFiles/t24.dir/build.make CMakeFiles/t24.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/paul/work/CV/DIP100/build/CMakeFiles --progress-num=1,2 "Built target t24"
+.PHONY : CMakeFiles/t24.dir/all
 
 # Include target in all.
-all: CMakeFiles/t23_more.dir/all
+all: CMakeFiles/t24.dir/all
 
 .PHONY : all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/t23_more.dir/rule: cmake_check_build_system
+CMakeFiles/t24.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/paul/work/CV/DIP100/build/CMakeFiles 2
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/t23_more.dir/all
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/t24.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/paul/work/CV/DIP100/build/CMakeFiles 0
-.PHONY : CMakeFiles/t23_more.dir/rule
+.PHONY : CMakeFiles/t24.dir/rule
 
 # Convenience name for target.
-t23_more: CMakeFiles/t23_more.dir/rule
+t24: CMakeFiles/t24.dir/rule
 
-.PHONY : t23_more
-
-# clean rule for target.
-CMakeFiles/t23_more.dir/clean:
-	$(MAKE) -f CMakeFiles/t23_more.dir/build.make CMakeFiles/t23_more.dir/clean
-.PHONY : CMakeFiles/t23_more.dir/clean
+.PHONY : t24
 
 # clean rule for target.
-clean: CMakeFiles/t23_more.dir/clean
+CMakeFiles/t24.dir/clean:
+	$(MAKE) -f CMakeFiles/t24.dir/build.make CMakeFiles/t24.dir/clean
+.PHONY : CMakeFiles/t24.dir/clean
+
+# clean rule for target.
+clean: CMakeFiles/t24.dir/clean
 
 .PHONY : clean
 
