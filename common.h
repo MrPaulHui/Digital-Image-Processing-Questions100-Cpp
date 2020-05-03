@@ -133,6 +133,16 @@ cv::Mat Clip(cv::Mat img){
     }
 }
 
+int clip_val(int x, int min, int max){
+    if(x<min){
+        x=min;
+    }
+    if(x>max){
+        x=max;
+    }
+    return x;
+}
+
 double* CalHist(cv::Mat img, bool norm=false){
     //三通道的直方图直接统计所有h×w×c个像素
     //int hist[256] = {0}; //只能初始化为0好像，这个好像不太行？
