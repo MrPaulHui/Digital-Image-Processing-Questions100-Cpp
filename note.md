@@ -353,7 +353,7 @@ $$
 
 ### 缩放
 
-a的值控制x方向的缩放幅度，d的值控制y方向的缩放幅度
+根据最基本的二维仿射变换式子可知，a的值控制x方向的缩放幅度，d的值控制y方向的缩放幅度
 $$
 \left[
 \begin{matrix}
@@ -540,3 +540,55 @@ $$
    A[1,2] += (h'-h)/2
    $$
    就得到了最终显示全部的旋转变换矩阵。
+
+### 倾斜/切变
+
+原理：
+
+以x方向倾斜$\alpha$为例，此时y方向保持不变（大概就是矩形拉伸成平行四边形）。
+$$
+y' = y
+$$
+x方向上，变换后的x‘与y值有关，y越大，倾斜的越大，中间的比例系数就是$tan\alpha$
+$$
+x' = x+ytan\alpha
+$$
+如下图
+
+<img src="/home/paul/下载/188271077.jpg" style="zoom:25%;" />
+
+写成变换矩阵：
+$$
+shear_x=\left[
+\begin{matrix}
+1&tan\alpha&0\\
+0&1&0\\
+0&0&1
+\end{matrix}
+\right]
+$$
+同理，对于y方向倾斜$\theta$，有
+$$
+x' = x\\
+y' = y+xtan\theta\\
+shear_y=\left[
+\begin{matrix}
+1&0&0\\
+tan\theta&1&0\\
+0&0&1
+\end{matrix}
+\right]
+$$
+对于两个方向都倾斜，直接组合即可（可以看做先在一个方向倾斜，再倾斜另一个方向。顺序不敏感，下面式子先算y方向的，再算x方向的，反之亦可，结果相同）。
+$$
+shear_{xy} = shear_xshear_y=\left[
+\begin{matrix}
+1&tan\alpha&0\\
+0&1&0\\
+0&0&1
+\end{matrix}
+\right]
+\left[\begin{matrix}1&0&0\\tan\theta&1&0\\0&0&1\end{matrix}\right]
+=\left[\begin{matrix}1&tan\alpha&0\\tan\theta&1&0\\0&0&1\end{matrix}\right]
+$$
+对于输出画布的尺寸，应在进行倾斜的方向加上最大可能的倾斜幅度（对于x方向，就是$htan\alpha$）。

@@ -37,10 +37,9 @@ cv::Mat Rotate_Affine(cv::Mat img, double angle, bool rotate_center=false, bool 
 
 int main(){
     cv::Mat img = cv::imread("../imgs/thorino.jpg", cv::IMREAD_COLOR);
-
     cv::Mat out = Rotate_Affine(img, 200, true, true);
     cout<<"out_shape: "<<out.rows<<" "<<out.cols<<endl;
-    cv::imshow("t29", out);
+    cv::imshow("t30", out);
     cv::waitKey(0);
     cv::destroyAllWindows();
 }
