@@ -65,39 +65,39 @@ CMAKE_SOURCE_DIR = /home/paul/work/CV/DIP100
 CMAKE_BINARY_DIR = /home/paul/work/CV/DIP100/build
 
 #=============================================================================
-# Target rules for target CMakeFiles/t31.dir
+# Target rules for target CMakeFiles/t28-31_more_face_align.dir
 
 # All Build rule for target.
-CMakeFiles/t31.dir/all:
-	$(MAKE) -f CMakeFiles/t31.dir/build.make CMakeFiles/t31.dir/depend
-	$(MAKE) -f CMakeFiles/t31.dir/build.make CMakeFiles/t31.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/paul/work/CV/DIP100/build/CMakeFiles --progress-num=1,2 "Built target t31"
-.PHONY : CMakeFiles/t31.dir/all
+CMakeFiles/t28-31_more_face_align.dir/all:
+	$(MAKE) -f CMakeFiles/t28-31_more_face_align.dir/build.make CMakeFiles/t28-31_more_face_align.dir/depend
+	$(MAKE) -f CMakeFiles/t28-31_more_face_align.dir/build.make CMakeFiles/t28-31_more_face_align.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/paul/work/CV/DIP100/build/CMakeFiles --progress-num=1,2 "Built target t28-31_more_face_align"
+.PHONY : CMakeFiles/t28-31_more_face_align.dir/all
 
 # Include target in all.
-all: CMakeFiles/t31.dir/all
+all: CMakeFiles/t28-31_more_face_align.dir/all
 
 .PHONY : all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/t31.dir/rule: cmake_check_build_system
+CMakeFiles/t28-31_more_face_align.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/paul/work/CV/DIP100/build/CMakeFiles 2
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/t31.dir/all
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/t28-31_more_face_align.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/paul/work/CV/DIP100/build/CMakeFiles 0
-.PHONY : CMakeFiles/t31.dir/rule
+.PHONY : CMakeFiles/t28-31_more_face_align.dir/rule
 
 # Convenience name for target.
-t31: CMakeFiles/t31.dir/rule
+t28-31_more_face_align: CMakeFiles/t28-31_more_face_align.dir/rule
 
-.PHONY : t31
-
-# clean rule for target.
-CMakeFiles/t31.dir/clean:
-	$(MAKE) -f CMakeFiles/t31.dir/build.make CMakeFiles/t31.dir/clean
-.PHONY : CMakeFiles/t31.dir/clean
+.PHONY : t28-31_more_face_align
 
 # clean rule for target.
-clean: CMakeFiles/t31.dir/clean
+CMakeFiles/t28-31_more_face_align.dir/clean:
+	$(MAKE) -f CMakeFiles/t28-31_more_face_align.dir/build.make CMakeFiles/t28-31_more_face_align.dir/clean
+.PHONY : CMakeFiles/t28-31_more_face_align.dir/clean
+
+# clean rule for target.
+clean: CMakeFiles/t28-31_more_face_align.dir/clean
 
 .PHONY : clean
 

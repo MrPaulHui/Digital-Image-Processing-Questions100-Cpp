@@ -5,6 +5,7 @@
 - 关于cv::Vec3f和.at的说明 https://www.cnblogs.com/TearCheer/p/12628798.html
 - cv::Mat的赋值和切片方法 https://blog.csdn.net/o3279/article/details/81304621
 - 创建Mat方法 https://blog.csdn.net/u012058778/article/details/90764430
+- 矩阵运算https://blog.csdn.net/iracer/article/details/51296631
 
 ## C++问题
 
@@ -365,6 +366,12 @@ a&0&tx\\
 $$
 不需要平移把tx和ty置0即可。
 
+缩放分为uniform scaling和non-uniform scaling
+
+前者两个方向缩放比例一致，即a=d，后者则随意。
+
+若缩放比例为负，则是反射的效果（参考下面旋转问题中的坐标系转换）。
+
 ### 旋转
 
 很有东西的，花了一天时间推导的哦。。。
@@ -592,3 +599,159 @@ shear_{xy} = shear_xshear_y=\left[
 =\left[\begin{matrix}1&tan\alpha&0\\tan\theta&1&0\\0&0&1\end{matrix}\right]
 $$
 对于输出画布的尺寸，应在进行倾斜的方向加上最大可能的倾斜幅度（对于x方向，就是$htan\alpha$）。
+
+### 综合的仿射变换——数字图像处理课的映射四边形问题和人脸关键点对齐问题
+
+这个问题更准确说是给定src图像上几个坐标点和dst图像上对应的坐标点，求src到dst的仿射变换矩阵。本质问题就是通过给定的对应坐标点条件，求解仿射矩阵，即解多元线性方程（超定方程）。
+
+#### 仿射矩阵自由度
+
+涉及到求解方程，肯定要考虑未知数个数，仿射矩阵未知数个数就是自由度。
+
+1. 最一般的仿射矩阵
+
+$$
+\left[
+\begin{matrix}
+a&b&tx\\
+c&d&ty\\
+0&0&1
+\end{matrix}
+\right]
+$$
+
+6个未知数，自由度为6
+
+2. 旋转+平移仿射（旋转和平移的组合，称作刚体变换或欧式变换）
+
+$$
+\left[
+\begin{matrix}
+cos(\alpha)&-sin(\alpha)&tx\\
+sin(\alpha)&cos(\alpha)&ty\\
+0&0&1
+\end{matrix}
+\right]
+$$
+
+有3个未知数，$\alpha,t_x,t_y$，自由度为3
+
+3. 旋转+平移+uniform scaling仿射（这个组合称作相似变换）
+
+$$
+\left[
+\begin{matrix}
+Scos(\alpha)&-Ssin(\alpha)&tx\\
+Ssin(\alpha)&Scos(\alpha)&ty\\
+0&0&1
+\end{matrix}
+\right]
+$$
+
+​       推导：
+$$
+\left[\begin{matrix}Scos(\alpha)&-Ssin(\alpha)&tx\\Ssin(\alpha)&Scos(\alpha)&ty\\0&0&1\end{matrix}\right]
+=\left[
+\begin{matrix}
+cos(\alpha)&-sin(\alpha)&tx\\
+sin(\alpha)&cos(\alpha)&ty\\
+0&0&1
+\end{matrix}
+\right]
+\left[
+\begin{matrix}
+S&0&0\\
+0&S&0\\
+0&0&1
+\end{matrix}
+\right]
+$$
+有4个未知数，$S,\alpha,t_x,t_y$，自由度为4
+
+可以参照这上面讲的https://www.cnblogs.com/shine-lee/p/10950963.html，其中对于空间和基的角度理解仿射变换矩阵这一点很不错。
+
+#### 求解仿射矩阵
+
+一对对应坐标点可以列出两个方程，所以根据要使用的仿射矩阵自由度，决定需要的对应点对数。对应点对数至少是自由度的一半（一对对应点列两个方程）。
+
+##### 人脸对齐
+
+考虑到人脸对齐后的效果要求，不能在变换过程中产生形变，所以不能使用切变/倾斜变换和non-uniform scaling，所以变换就是平移+旋转+uniform scaling，即上面说的第三种情况，相似变换，自由度为4。
+
+一般人脸检测检测出5个关键点，为$(x_1,y_1),(x_2,y_2),...,(x_5,y_5)$，对应的对齐后的位置为$(m_1,n_1),(m_2,n_2),...,(m_5,n_5)$
+
+映射关系即方程组为
+$$
+\left[
+\begin{matrix}
+m_1&m_2&m_3&m_4&m_5\\
+n_1&n_2&n_3&n_4&n_5\\
+1&1&1&1&1
+\end{matrix}
+\right]=
+\left[
+\begin{matrix}
+Scos(\alpha)&-Ssin(\alpha)&tx\\
+Ssin(\alpha)&Scos(\alpha)&ty\\
+0&0&1
+\end{matrix}
+\right]
+\left[
+\begin{matrix}
+x_1&x_2&x_3&x_4&x_5\\
+y_1&y_2&y_3&y_4&y_5\\
+1&1&1&1&1
+\end{matrix}
+\right]
+$$
+等价的，可以写成
+$$
+\left[
+\begin{matrix}
+m_1\\
+n_1\\
+m_2\\
+n_2\\
+m_3\\
+n_3\\
+m_4\\
+n_4\\
+m_5\\
+n_5
+\end{matrix}
+\right]=
+\left[
+\begin{matrix}
+x_1&-y_1&1&0\\
+y_1&x_1&0&1\\
+x_2&-y_2&1&0\\
+y_2&x_2&0&1\\
+x_3&-y_3&1&0\\
+y_3&x_3&0&1\\
+x_4&-y_4&1&0\\
+y_4&x_4&0&1\\
+x_5&-y_5&1&0\\
+y_5&x_5&0&1\\
+\end{matrix}
+\right]
+\left[
+\begin{matrix}
+Scos\alpha\\
+Ssin\alpha\\
+t_x\\
+t_y\\
+\end{matrix}
+\right]
+$$
+上式可记做
+$$
+Y=XA
+$$
+由最小二乘法（广义逆？，参考https://blog.csdn.net/wlzard/article/details/77840275，好像就是吴恩达讲的线性回归的什么解法。。。），可推出
+$$
+A=(X^TX)^{-1}X^TY
+$$
+
+##### 数字图像处理课的映射四边形问题
+
+和上面同理，只是没有形变限制，所以使用最一般的自由度为6的仿射矩阵，求解之，即可。
