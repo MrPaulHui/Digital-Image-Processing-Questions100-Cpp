@@ -286,8 +286,10 @@ cv::Mat Affine(cv::Mat img, double a, double b, double c, double d, double tx, d
     cv::Mat out = cv::Mat::zeros(out_height, out_width, CV_8UC3);
     for(int i=0;i<out_height;i++){
         for(int j=0;j<out_width;j++){
-            ori_i = (-c*j + a*i)/det - ty;
-            ori_j = (d*j - b*i)/det - tx;
+            //ori_i = (-c*j + a*i)/det - ty;
+            //ori_j = (d*j - b*i)/det - tx;
+            ori_i = (-c*j + a*i + c*tx - a*ty)/det; //官方教程给的是不对的，应该先求出来整体的仿射变换逆矩阵，教程给的方法对变换顺序敏感
+            ori_j = (d*j - b*i + b*ty - d*tx)/det;
             if(val_in(ori_i, 0, height-1) && val_in(ori_j, 0, width-1)){
                 for(int c=0;c<channel;c++){
                     out.at<cv::Vec3b>(i, j)[c] = img.at<cv::Vec3b>(ori_i, ori_j)[c];

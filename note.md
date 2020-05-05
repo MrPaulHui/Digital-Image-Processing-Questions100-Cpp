@@ -284,4 +284,259 @@ $$
 
 ## 仿射变换
 
-- 旋转变换因为坐标系原因，逆时针旋转30度，实际上角度是-30
+仿射变换最基本的就是$y=ax+b$，对于二维的就是
+$$
+x' = ax+by+t_x\\
+y' = cx+dy+t_y
+$$
+参考对二维向量做这种形式的变换，向量会发生平移，缩放，旋转等变换，同理对二维图像也是一样。
+
+写成矩阵形式：
+$$
+\left[\begin{matrix}x'\\y'\\1\end{matrix}\right]=
+\left[
+\begin{matrix}
+a&b&tx\\
+c&d&ty\\
+0&0&1
+\end{matrix}
+\right]
+\left[\begin{matrix}x\\y\\1\end{matrix}\right]
+$$
+其中，矩阵
+$$
+A=\left[
+\begin{matrix}
+a&b&tx\\
+c&d&ty\\
+0&0&1
+\end{matrix}
+\right]
+$$
+A为仿射变换矩阵，其中参数a,b,c,d为控制缩放，旋转，倾斜变换的参数，tx，ty为控制平移的参数。
+
+A的逆矩阵为
+$$
+A^{-1}=\left[
+\begin{matrix}
+\frac{d}{ad-bc}&\frac{-b}{ad-bc}&\frac{bt_y-dt_x}{ad-bc}\\
+\frac{-c}{ad-bc}&\frac{a}{ad-bc}&\frac{ct_x-at_y}{ad-bc}\\
+0&0&1
+\end{matrix}
+\right]
+=\frac{1}{ad-bc}\left[
+\begin{matrix}
+d&-b&bt_y-dt_x\\
+-c&a&ct_x-at_y\\
+0&0&ad-bc
+\end{matrix}
+\right]
+$$
+实现中采用逆矩阵，即遍历要输出的图像像素，通过逆矩阵反变换对应到原图的像素点（对应到小数值的进行插值）。如果直接遍历输入的原图，正变换到输出图，输出图有元素会对应不到。
+
+要输出图像的尺寸也需要注意，对于缩放问题，根据缩放幅度确定变换后的图像尺寸，对于旋转问题，看下面的情况确定。
+
+### 平移
+
+最简单的一种，a,b,c,d构成单位矩阵，用tx，ty控制两个方向的平移幅度即可。
+
+对应的矩阵：
+$$
+\left[
+\begin{matrix}
+1&0&tx\\
+0&1&ty\\
+0&0&1
+\end{matrix}
+\right]
+$$
+
+### 缩放
+
+a的值控制x方向的缩放幅度，d的值控制y方向的缩放幅度
+$$
+\left[
+\begin{matrix}
+a&0&tx\\
+0&d&ty\\
+0&0&1
+\end{matrix}
+\right]
+$$
+不需要平移把tx和ty置0即可。
+
+### 旋转
+
+很有东西的，花了一天时间推导的哦。。。
+
+首先二维向量的旋转矩阵为
+$$
+\left[
+\begin{matrix}
+cos(\alpha)&-sin(\alpha)\\
+sin(\alpha)&cos(\alpha)
+\end{matrix}
+\right]
+$$
+同样也适用于二维图像，不过要注意二者坐标系的区别，图像逆时针旋转对应的旋转角为负值。（正常二维坐标系，逆时针是向y轴正轴方向转，在图像坐标系也是这样，不过图像坐标系y轴正轴是向下的，和正常的相反）
+
+#### 以(0,0)为中心旋转
+
+最简单的一种，只要注意上面说的坐标系区别，旋转角正负即可。
+
+对应矩阵
+$$
+\left[
+\begin{matrix}
+cos(\alpha)&-sin(\alpha)&0\\
+sin(\alpha)&cos(\alpha)&0\\
+0&0&1
+\end{matrix}
+\right]
+$$
+这种旋转会导致图像很大部分显示不出来。
+
+#### 以图像的中心为中心旋转
+
+下面的w，h为图像的宽度和高度
+
+思路：
+
+1. 先进行坐标系转换，把图像中心转换为坐标原点，并且将图像坐标系转换为正常的二维坐标系。如下图
+
+   ![img](https://pic002.cnblogs.com/images/2010/221871/2010122615243629.png)
+
+   这一步转换对应的矩阵为：
+   $$
+   A_1=\left[
+   \begin{matrix}
+   1&0&-\frac{w}{2}\\
+   0&-1&\frac{h}{2}\\
+   0&0&1
+   \end{matrix}
+   \right]
+   $$
+
+2. 进行旋转变换，注意这里和二维向量的旋转一模一样，即正的角度代表逆时针旋转，因为已经转换了坐标系
+
+   这一步转换对应的矩阵为：
+   $$
+   A_2=\left[
+   \begin{matrix}
+   cos(\alpha)&-sin(\alpha)&0\\
+   sin(\alpha)&cos(\alpha)&0\\
+   0&0&1
+   \end{matrix}
+   \right]
+   $$
+
+3. 将坐标系转换回去，转换为原来的图像坐标系，原点也转换为原来的。是第一步的逆过程
+
+   对应的矩阵是第一步矩阵的逆矩阵
+   $$
+   A_3=A_1^{-1}=\left[
+   \begin{matrix}
+   1&0&\frac{w}{2}\\
+   0&-1&\frac{h}{2}\\
+   0&0&1
+   \end{matrix}
+   \right]
+   $$
+
+将以上三步矩阵组合起来，得到最终的变换矩阵。要注意组合顺序，先进行的在右边，因为是右乘坐标点。
+$$
+A=A_3 A_2 A_1=\left[
+\begin{matrix}
+1&0&\frac{w}{2}\\
+0&-1&\frac{h}{2}\\
+0&0&1
+\end{matrix}
+\right]
+\left[
+\begin{matrix}
+cos(\alpha)&-sin(\alpha)&0\\
+sin(\alpha)&cos(\alpha)&0\\
+0&0&1
+\end{matrix}
+\right]
+\left[
+\begin{matrix}
+1&0&-\frac{w}{2}\\
+0&-1&\frac{h}{2}\\
+0&0&1
+\end{matrix}
+\right]
+$$
+运算后得到
+$$
+A=\left[
+\begin{matrix}
+cos(\alpha)&sin(\alpha)&(-wcos\alpha-hsin\alpha+w)/2\\
+-sin(\alpha)&cos(\alpha)&(wsin\alpha-hcos\alpha+h)/2\\
+0&0&1
+\end{matrix}
+\right]
+$$
+为最终的变换矩阵。
+
+这样旋转会使图像中心部分出现在最终输出图像的中部，但边缘四个角的图像部分会显示不出来。
+
+#### 旋转后显示全部图像
+
+思路：
+
+1. 首先输出图像的尺寸要确保可以显示旋转后的图像。如下图
+
+   ![img](https://pic002.cnblogs.com/images/2010/221871/2010122616090174.png)
+
+   那么可以根据旋转角，确定输出图像（说成画布可能更好理解）的尺寸。高度h‘，宽度w’。
+   $$
+   h' = hcos\alpha + wsin\alpha\\
+   w' = wcos\alpha + hsin\alpha
+   $$
+
+2. 以图像中心为中心旋转得到图像，将这个图像的中心挪到新尺寸画布的中心，即再做一次平移变换。
+
+   这个平移变换矩阵为：
+   $$
+   \left[
+   \begin{matrix}
+   1&0&(w'-w)/2\\
+   0&1&(h'-h)/2\\
+   0&0&1
+   \end{matrix}
+   \right]
+   $$
+   再将其和中心旋转对应的矩阵组合
+   $$
+   \left[
+   \begin{matrix}
+   1&0&(w'-w)/2\\
+   0&1&(h'-h)/2\\
+   0&0&1
+   \end{matrix}
+   \right]
+   \left[
+   \begin{matrix}
+   cos(\alpha)&sin(\alpha)&(-wcos\alpha-hsin\alpha+w)/2\\
+   -sin(\alpha)&cos(\alpha)&(wsin\alpha-hcos\alpha+h)/2\\
+   0&0&1
+   \end{matrix}
+   \right]
+   $$
+   最终得到变换矩阵
+   $$
+   \left[
+   \begin{matrix}
+   cos(\alpha)&sin(\alpha)&(-wcos\alpha-hsin\alpha+w')/2\\
+   -sin(\alpha)&cos(\alpha)&(wsin\alpha-hcos\alpha+h')/2\\
+   0&0&1
+   \end{matrix}
+   \right]
+   $$
+   和上一种中心旋转得到的A矩阵，有另一种数值关系：
+   $$
+   A[0,2] += (w'-w)/2\\
+   A[1,2] += (h'-h)/2
+   $$
+   就得到了最终显示全部的旋转变换矩阵。
