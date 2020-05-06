@@ -1,4 +1,5 @@
 // max-min filter 用来提取边缘（效果应该不好吧？）
+//下面这几题关于边缘检测的，都是只输出了梯度图（一阶或二阶），没有设定梯度阈值进行二值化
 #include <opencv2/core.hpp>
 #include <opencv2/highgui.hpp>
 #include <iostream>

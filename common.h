@@ -100,6 +100,40 @@ cv::Mat Conv(cv::Mat img, cv::Mat kernel, bool need_pad=true, bool need_clip=fal
     return out;
 }
 
+cv::Mat get_guassian_kernel(double sigma, int k_size){
+    double kernel[k_size][k_size];
+    double pad = floor(k_size/2);
+    int _x = 0, _y = 0;
+    double kernel_sum = 0;
+    for (int y = 0; y < k_size; y++){
+        for (int x = 0; x < k_size; x++){
+            _y = y - pad;
+            _x = x - pad; 
+            kernel[y][x] = 1 / (2 * M_PI * sigma * sigma) * exp( - (_x * _x + _y * _y) / (2 * sigma * sigma));
+            kernel_sum += kernel[y][x];
+        }
+    }
+    for (int y = 0; y < k_size; y++){
+        for (int x = 0; x < k_size; x++){
+            kernel[y][x] /= kernel_sum; //归一化
+        }
+    }
+    cv::Mat kernel_mat(k_size, k_size, CV_64FC1, kernel); //直接返回kernel_mat会出问题，用下面方法可以解决
+    cv::Mat out = kernel_mat.clone();
+    return out;
+}
+
+cv::Mat Guassian_Filter(cv::Mat img, double sigma, int k_size){
+    cv::Mat kernel = get_guassian_kernel(sigma, k_size);
+    int channel = img.channels();
+    if(channel==1){
+        return Conv_Gray(img, kernel);
+    }
+    else{
+        return Conv(img, kernel);
+    }
+}
+
 cv::Mat Clip(cv::Mat img){
     int height = img.rows;
     int width = img.cols;
