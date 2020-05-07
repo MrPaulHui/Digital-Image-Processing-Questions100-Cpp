@@ -20,6 +20,8 @@
 - 均值滤波对椒盐噪声没有作用，因为取均值，椒盐噪声异常点对滤波后的图像仍然有很大的影响。
 - 高斯滤波器有去噪和模糊图像两个作用。
 
+- [ ] 保边滤波器 https://blog.csdn.net/eejieyang/article/details/52333112
+
 ## 其他的滤波器
 
 - motion filter，对图像进行运动模糊处理，kernel是对对角线元素取平均。t12。
@@ -838,3 +840,52 @@ $$
 在这里，我们使高阈值为100，低阈值为20。顺便说一句，阈值的大小需要边看结果边调整。
 
 上面的算法就是Canny边缘检测算法了。
+
+## 霍夫变换
+
+### 检测直线
+
+参考：https://www.cnblogs.com/AndyJee/p/3805594.html
+
+霍夫变换中直线方程推导：https://blog.csdn.net/qq_25847123/article/details/74612976
+
+直线方程推导过程自己写一遍吧：
+
+<img src="https://img-blog.csdn.net/20170706213251494" alt="img" style="zoom: 80%;" />
+
+k为斜率，$\theta$为垂线与x轴夹角，r为原点到直线的距离
+$$
+\frac{r\sin\theta-y}{r\cos\theta-x}=k=-\frac{1}{\tan\theta}=-\frac{\cos\theta}{\sin\theta}
+$$
+
+$$
+-\sin\theta(r\sin\theta-y) = \cos\theta(r\cos\theta-x)\\
+-r\sin^2\theta+y\sin\theta=r\cos^2\theta-x\cos\theta
+$$
+
+$$
+r=x\cos\theta+y\sin\theta
+$$
+
+霍夫变换具体过程步骤参考官方教程，和自己代码的实现。
+
+### 检测圆
+
+参考：https://www.iteye.com/blog/lps-683-2256012
+
+圆方程推导：
+
+一般的圆方程：
+$$
+(x-a)^2+(y-b)^2=r^2
+$$
+引入$\theta$参数
+$$
+x = r\cos\theta+a\\
+y = r\sin\theta+b
+$$
+最终形式
+$$
+a=x-r\cos\theta\\
+b=y-r\sin\theta
+$$
