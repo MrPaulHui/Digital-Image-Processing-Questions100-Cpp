@@ -902,7 +902,7 @@ S=\frac{\sum\limits_{x=0}^w\ \sum\limits_{y=0}^h\ I(i+x,j+y)\  T(x,y)}{\sqrt{\su
 $$
 即分子没有绝对值
 
-关于zero-mean NCC，$m_i$应该表示扫描的区域子图的平均值，而不是整个图像的平均值。
+关于zero-mean NCC，$m_i$表示整个图像的平均值。
 
 几个算法都是衡量两个图像区域之间的相关性，用不同的衡量标准，类似于不同的loss。
 

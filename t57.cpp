@@ -14,20 +14,27 @@ cv::Point Pattern_Match_ZNCC(cv::Mat img, cv::Mat T, bool disp=true){
     int channel = img.channels();
     double max = -1;
     double sum;
-    double region_squared_sum, region_mean;
+    double region_squared_sum;
     double img_mean = 0;
     double T_squared_sum = 0;
     double T_mean = 0;
     for(int dy=0;dy<Th;dy++){
         for(int dx=0;dx<Tw;dx++){
             for(int c=0;c<channel;c++){
-                T_squared_sum += pow(T.at<cv::Vec3b>(dy,dx)[c], 2);
+                //T_squared_sum += pow(T.at<cv::Vec3b>(dy,dx)[c], 2);
                 T_mean += T.at<cv::Vec3b>(dy,dx)[c];
             }
         }
     }
     T_mean /= Th*Tw*channel;
-    T_squared_sum = sqrt(T_squared_sum+(1-2*Th*Tw*channel)*T_mean*T_mean);
+    for(int dy=0;dy<Th;dy++){
+        for(int dx=0;dx<Tw;dx++){
+            for(int c=0;c<channel;c++){
+                T_squared_sum += pow((T.at<cv::Vec3b>(dy,dx)[c]-T_mean), 2);
+            }
+        }
+    }
+    T_squared_sum = sqrt(T_squared_sum);
     
     for(int y=0;y<height;y++){
         for(int x=0;x<width;x++){
@@ -43,25 +50,6 @@ cv::Point Pattern_Match_ZNCC(cv::Mat img, cv::Mat T, bool disp=true){
         for(int x=0;x<width-Tw;x++){
             sum = 0;
             region_squared_sum = 0;
-            /*
-            for(int dy=0;dy<Th;dy++){
-                for(int dx=0;dx<Tw;dx++){
-                    for(int c=0;c<channel;c++){
-                        region_squared_sum += pow(img.at<cv::Vec3b>(y+dy,x+dx)[c], 2);
-                        region_mean += img.at<cv::Vec3b>(y+dy,x+dx)[c];
-                    }
-                }
-            }
-            region_mean /= Th*Tw*channel;
-            region_squared_sum = sqrt(region_squared_sum+(1-2*Th*Tw*channel)*region_mean*region_mean);
-            for(int dy=0;dy<Th;dy++){
-                for(int dx=0;dx<Tw;dx++){
-                    for(int c=0;c<channel;c++){
-                        sum += (img.at<cv::Vec3b>(y+dy,x+dx)[c]-region_mean)*(T.at<cv::Vec3b>(dy,dx)[c]-T_mean);
-                    }
-                }
-            }
-            */
            for(int dy=0;dy<Th;dy++){
                 for(int dx=0;dx<Tw;dx++){
                     for(int c=0;c<channel;c++){
