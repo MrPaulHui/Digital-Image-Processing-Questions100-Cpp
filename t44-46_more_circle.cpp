@@ -45,10 +45,18 @@ void Hough_Transform_circle(cv::Mat img, int Rmin=0, int Rmax=0, int topN=10, bo
     int a, b;
     double rad;
     cout<<width+3*rmax<<" "<<height+3*rmax<<" "<<rmax-rmin<<endl;
-    int hough_table[14090][13550][2500]={0};
-    cout<<hough_table[123][123][123]<<endl;
+    //int hough_table[14090][13550][2500]={0};
     cout<<"kym"<<endl;
     //int hough_table[width+3*rmax][height+3*rmax][360][rmax-rmin] = {0};
+    int*** hough_table;
+    hough_table = new int **[width+3*rmax];
+    for(int i=0;i<width+3*rmax;i++){
+        hough_table[i] = new int *[height+3*rmax];
+        for(int j=0;j<height+3*rmax;j++){
+            hough_table[i][j] = new int [rmax-rmin];
+        }
+    }
+    cout<<hough_table[123][123][123]<<endl;
     cout<<"wnm"<<endl;
     
     for(int i=0;i<height;i++){
@@ -66,6 +74,13 @@ void Hough_Transform_circle(cv::Mat img, int Rmin=0, int Rmax=0, int topN=10, bo
             }
         }
     }
+    for(int i=0;i<width+3*rmax;i++){
+        for(int j=0;j<height+3*rmax;j++){
+            delete hough_table[i][j];
+        }
+        delete hough_table[i];
+    }
+    delete hough_table;
     cout<<"niubile"<<endl;
     //cout<<hough_table[123][123][123]<<endl;
     //step 3. nms and get topN lines
