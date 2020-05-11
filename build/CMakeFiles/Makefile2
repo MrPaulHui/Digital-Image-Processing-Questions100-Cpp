@@ -65,39 +65,39 @@ CMAKE_SOURCE_DIR = /home/paul/work/CV/DIP100
 CMAKE_BINARY_DIR = /home/paul/work/CV/DIP100/build
 
 #=============================================================================
-# Target rules for target CMakeFiles/t57.dir
+# Target rules for target CMakeFiles/t52.dir
 
 # All Build rule for target.
-CMakeFiles/t57.dir/all:
-	$(MAKE) -f CMakeFiles/t57.dir/build.make CMakeFiles/t57.dir/depend
-	$(MAKE) -f CMakeFiles/t57.dir/build.make CMakeFiles/t57.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/paul/work/CV/DIP100/build/CMakeFiles --progress-num=1,2 "Built target t57"
-.PHONY : CMakeFiles/t57.dir/all
+CMakeFiles/t52.dir/all:
+	$(MAKE) -f CMakeFiles/t52.dir/build.make CMakeFiles/t52.dir/depend
+	$(MAKE) -f CMakeFiles/t52.dir/build.make CMakeFiles/t52.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/paul/work/CV/DIP100/build/CMakeFiles --progress-num=1,2 "Built target t52"
+.PHONY : CMakeFiles/t52.dir/all
 
 # Include target in all.
-all: CMakeFiles/t57.dir/all
+all: CMakeFiles/t52.dir/all
 
 .PHONY : all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/t57.dir/rule: cmake_check_build_system
+CMakeFiles/t52.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/paul/work/CV/DIP100/build/CMakeFiles 2
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/t57.dir/all
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/t52.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/paul/work/CV/DIP100/build/CMakeFiles 0
-.PHONY : CMakeFiles/t57.dir/rule
+.PHONY : CMakeFiles/t52.dir/rule
 
 # Convenience name for target.
-t57: CMakeFiles/t57.dir/rule
+t52: CMakeFiles/t52.dir/rule
 
-.PHONY : t57
-
-# clean rule for target.
-CMakeFiles/t57.dir/clean:
-	$(MAKE) -f CMakeFiles/t57.dir/build.make CMakeFiles/t57.dir/clean
-.PHONY : CMakeFiles/t57.dir/clean
+.PHONY : t52
 
 # clean rule for target.
-clean: CMakeFiles/t57.dir/clean
+CMakeFiles/t52.dir/clean:
+	$(MAKE) -f CMakeFiles/t52.dir/build.make CMakeFiles/t52.dir/clean
+.PHONY : CMakeFiles/t52.dir/clean
+
+# clean rule for target.
+clean: CMakeFiles/t52.dir/clean
 
 .PHONY : clean
 

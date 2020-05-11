@@ -516,3 +516,117 @@ cv::Mat Canny(cv::Mat img, double high_thresh=100, double low_thresh=20, bool di
     }
     return out;
 }
+
+cv::Mat Ostu_Threshold_two(cv::Mat img){
+    cv::Mat gray = ToGray(img);
+    int height = gray.rows;
+    int width = gray.cols;
+    double w0=0, w1=0, u0=0, u1=0, max_g=0;
+    int th;
+    for(int t=0; t<255; t++){
+        w0=0;
+        w1=0;
+        u0=0;
+        u1=0;
+        for(int i=0; i<height; i++){
+            for(int j=0; j<width; j++){
+                int value = int(gray.at<uchar>(i, j));
+                if(value<t){
+                    w0++;
+                    u0 += value;
+                }
+                else{
+                    w1++;
+                    u1 += value;
+                }
+            }
+        }
+        u0 /= w0;
+        u1 /= w1;
+        w0 /= (height*width);
+        w1 /= (height*width);
+        double g = w0 * w1 * pow((u0-u1), 2);
+        if(g>max_g){
+            max_g=g;
+            th = t;
+        }
+    }    
+    for(int i=0;i<height;i++){
+        for(int j=0;j<width;j++){
+            if(gray.at<uchar>(i,j)<=th){
+                gray.at<uchar>(i,j) = 0;
+            }
+            else{
+                gray.at<uchar>(i,j) = 255;
+            }
+        }
+    }
+    return gray;
+}
+
+cv::Mat dilate(cv::Mat binary_, int N=1){
+    cv::Mat binary = binary_.clone();
+    int height = binary.rows;
+    int width = binary.cols;
+    for(int n=0;n<N;n++){
+        cv::Mat tmp = binary.clone();
+        for(int i=0;i<height;i++){
+            for(int j=0;j<width;j++){
+                if(tmp.at<uchar>(i,j)==255)continue;
+                if(j-1>=0 && tmp.at<uchar>(i,j-1)==255){
+                    binary.at<uchar>(i,j) = 255;
+                    continue;
+                }
+                if(j+1<width && tmp.at<uchar>(i,j+1)==255){
+                    binary.at<uchar>(i,j) = 255;
+                    continue;
+                }
+                if(i-1>=0 && tmp.at<uchar>(i-1,j)==255){
+                    binary.at<uchar>(i,j) = 255;
+                    continue;
+                }
+                if(i+1<height && tmp.at<uchar>(i+1,j)==255){
+                    binary.at<uchar>(i,j) = 255;
+                    continue;
+                }
+            }
+        }
+    }
+    return binary;
+}
+
+cv::Mat erode(cv::Mat binary_, int N=1){
+    cv::Mat binary = binary_.clone();
+    int height = binary.rows;
+    int width = binary.cols;
+    for(int n=0;n<N;n++){
+        cv::Mat tmp = binary.clone();
+        for(int i=0;i<height;i++){
+            for(int j=0;j<width;j++){
+                if(tmp.at<uchar>(i,j)==0)continue;
+                if(j-1>=0 && tmp.at<uchar>(i,j-1)==0){
+                    binary.at<uchar>(i,j) = 0;
+                    continue;
+                }
+                if(j+1<width && tmp.at<uchar>(i,j+1)==0){
+                    binary.at<uchar>(i,j) = 0;
+                    continue;
+                }
+                if(i-1>=0 && tmp.at<uchar>(i-1,j)==0){
+                    binary.at<uchar>(i,j) = 0;
+                    continue;
+                }
+                if(i+1<height && tmp.at<uchar>(i+1,j)==0){
+                    binary.at<uchar>(i,j) = 0;
+                    continue;
+                }
+            }
+        }
+    }
+    return binary;
+}
+
+cv::Mat opening_closing_op(cv::Mat binary, int N=1, bool open=true){
+    if(open)return dilate(erode(binary, N), N);
+    else return erode(dilate(binary, N), N);
+}
