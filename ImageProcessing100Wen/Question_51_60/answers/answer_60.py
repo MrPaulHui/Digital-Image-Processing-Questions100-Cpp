@@ -11,9 +11,12 @@ img2 = cv2.imread("thorino.jpg").astype(np.float32)
 a = 0.6
 out = img * a + img2 * (1 - a)
 out = out.astype(np.uint8)
-    
+print(img.shape)
+print(img2.shape)
 # Save result
-cv2.imwrite("out.jpg", out)
-cv2.imshow("result", out)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+#cv2.imwrite("out.jpg", out)
+#cv2.imshow("result", out)
+#cv2.waitKey(0)
+#cv2.destroyAllWindows()
+plt.imshow(out)
+plt.show()

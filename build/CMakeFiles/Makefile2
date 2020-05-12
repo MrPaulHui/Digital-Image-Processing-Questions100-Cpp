@@ -65,39 +65,39 @@ CMAKE_SOURCE_DIR = /home/paul/work/CV/DIP100
 CMAKE_BINARY_DIR = /home/paul/work/CV/DIP100/build
 
 #=============================================================================
-# Target rules for target CMakeFiles/t59.dir
+# Target rules for target CMakeFiles/t60.dir
 
 # All Build rule for target.
-CMakeFiles/t59.dir/all:
-	$(MAKE) -f CMakeFiles/t59.dir/build.make CMakeFiles/t59.dir/depend
-	$(MAKE) -f CMakeFiles/t59.dir/build.make CMakeFiles/t59.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/paul/work/CV/DIP100/build/CMakeFiles --progress-num=1,2 "Built target t59"
-.PHONY : CMakeFiles/t59.dir/all
+CMakeFiles/t60.dir/all:
+	$(MAKE) -f CMakeFiles/t60.dir/build.make CMakeFiles/t60.dir/depend
+	$(MAKE) -f CMakeFiles/t60.dir/build.make CMakeFiles/t60.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/paul/work/CV/DIP100/build/CMakeFiles --progress-num=1,2 "Built target t60"
+.PHONY : CMakeFiles/t60.dir/all
 
 # Include target in all.
-all: CMakeFiles/t59.dir/all
+all: CMakeFiles/t60.dir/all
 
 .PHONY : all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/t59.dir/rule: cmake_check_build_system
+CMakeFiles/t60.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/paul/work/CV/DIP100/build/CMakeFiles 2
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/t59.dir/all
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/t60.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/paul/work/CV/DIP100/build/CMakeFiles 0
-.PHONY : CMakeFiles/t59.dir/rule
+.PHONY : CMakeFiles/t60.dir/rule
 
 # Convenience name for target.
-t59: CMakeFiles/t59.dir/rule
+t60: CMakeFiles/t60.dir/rule
 
-.PHONY : t59
-
-# clean rule for target.
-CMakeFiles/t59.dir/clean:
-	$(MAKE) -f CMakeFiles/t59.dir/build.make CMakeFiles/t59.dir/clean
-.PHONY : CMakeFiles/t59.dir/clean
+.PHONY : t60
 
 # clean rule for target.
-clean: CMakeFiles/t59.dir/clean
+CMakeFiles/t60.dir/clean:
+	$(MAKE) -f CMakeFiles/t60.dir/build.make CMakeFiles/t60.dir/clean
+.PHONY : CMakeFiles/t60.dir/clean
+
+# clean rule for target.
+clean: CMakeFiles/t60.dir/clean
 
 .PHONY : clean
 

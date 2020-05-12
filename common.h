@@ -630,3 +630,29 @@ cv::Mat opening_closing_op(cv::Mat binary, int N=1, bool open=true){
     if(open)return dilate(erode(binary, N), N);
     else return erode(dilate(binary, N), N);
 }
+
+cv::Mat bilinear_interpolation(cv::Mat img, double scale_y, double scale_x){
+    int height = img.rows;
+    int width = img.cols;
+    int channel = img.channels();
+    int out_height = (int)(height*scale_y);
+    int out_width = (int)(width*scale_x);
+    cv::Mat out = cv::Mat::zeros(out_height, out_width, CV_8UC3);
+    int x, y;
+    double dx, dy;
+    double val;
+    for(int i=0;i<out_height;i++){
+        y = floor(i/scale_y);
+        dy = i/scale_y - y;
+        for(int j=0;j<out_width;j++){
+            x = floor(j/scale_x);
+            dx = j/scale_x - x;
+            for(int c=0;c<channel;c++){
+                val = (1-dx)*(1-dy)*(double)img.at<cv::Vec3b>(y,x)[c] + dx*(1-dy)*(double)img.at<cv::Vec3b>(y,x+1)[c] + 
+                      (1-dx)*dy*(double)img.at<cv::Vec3b>(y+1,x)[c] + dx*dy*(double)img.at<cv::Vec3b>(y+1,x+1)[c];
+                out.at<cv::Vec3b>(i,j)[c] = (uchar)val;
+            }
+        }
+    }
+    return out;
+}

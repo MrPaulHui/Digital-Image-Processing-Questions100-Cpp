@@ -251,6 +251,14 @@ https://blog.csdn.net/wukery/article/details/77567933
 
 主要是解决传输过程中产生的非线性问题。参考官方教程。（这里应该涉及到了gamma变换，可以结合hsv一起整理一下）
 
+### 透明混合
+
+$$
+out = img1*\alpha+img2*(1-\alpha)
+$$
+
+
+
 ## 插值
 
 这里官方教程讲的不错，可以直接参考。
