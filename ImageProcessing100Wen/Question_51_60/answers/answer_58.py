@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Read image
-img = cv2.imread("seg.png").astype(np.float32)
+img = cv2.imread("../digit.png").astype(np.float32)
 H, W, C = img.shape
 
 label = np.zeros((H, W), dtype=np.int)
@@ -45,15 +45,20 @@ for l in range(2, n+1):
                 count += 1
                 flag = False
             LUT[i] = count
-
-COLORS = [[0, 0, 255], [0, 255, 0], [255, 0, 0], [255, 255, 0]]
+print(set([i for i in LUT if i]))
+import random
+COLORS = []
+ii = 0
+while ii < 100:
+    COLORS.append([random.randint(128,255),random.randint(128,255),random.randint(128,255)])
+    ii += 1
+#COLORS = [[0, 0, 255], [0, 255, 0], [255, 0, 0], [255, 255, 0]]
 out = np.zeros((H, W, C), dtype=np.uint8)
 
 for i, lut in enumerate(LUT[2:]):
     out[label == (i+2)] = COLORS[lut-2]
     
 # Save result
-cv2.imwrite("out.png", out)
-cv2.imshow("result", out)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+#cv2.imwrite("out.png", out)
+plt.imshow(out)
+plt.show()

@@ -56,17 +56,6 @@ CMAKE_BINARY_DIR = /home/paul/work/CV/DIP100/build
 #=============================================================================
 # Targets provided globally by CMake.
 
-# Special rule for the target edit_cache
-edit_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
-	/usr/local/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
-.PHONY : edit_cache
-
-# Special rule for the target edit_cache
-edit_cache/fast: edit_cache
-
-.PHONY : edit_cache/fast
-
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
@@ -77,6 +66,17 @@ rebuild_cache:
 rebuild_cache/fast: rebuild_cache
 
 .PHONY : rebuild_cache/fast
+
+# Special rule for the target edit_cache
+edit_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
+	/usr/local/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+.PHONY : edit_cache
+
+# Special rule for the target edit_cache
+edit_cache/fast: edit_cache
+
+.PHONY : edit_cache/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -111,44 +111,44 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named t52
+# Target rules for targets named t59
 
 # Build rule for target.
-t52: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 t52
-.PHONY : t52
+t59: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 t59
+.PHONY : t59
 
 # fast build rule for target.
-t52/fast:
-	$(MAKE) -f CMakeFiles/t52.dir/build.make CMakeFiles/t52.dir/build
-.PHONY : t52/fast
+t59/fast:
+	$(MAKE) -f CMakeFiles/t59.dir/build.make CMakeFiles/t59.dir/build
+.PHONY : t59/fast
 
-t52.o: t52.cpp.o
+t59.o: t59.cpp.o
 
-.PHONY : t52.o
+.PHONY : t59.o
 
 # target to build an object file
-t52.cpp.o:
-	$(MAKE) -f CMakeFiles/t52.dir/build.make CMakeFiles/t52.dir/t52.cpp.o
-.PHONY : t52.cpp.o
+t59.cpp.o:
+	$(MAKE) -f CMakeFiles/t59.dir/build.make CMakeFiles/t59.dir/t59.cpp.o
+.PHONY : t59.cpp.o
 
-t52.i: t52.cpp.i
+t59.i: t59.cpp.i
 
-.PHONY : t52.i
+.PHONY : t59.i
 
 # target to preprocess a source file
-t52.cpp.i:
-	$(MAKE) -f CMakeFiles/t52.dir/build.make CMakeFiles/t52.dir/t52.cpp.i
-.PHONY : t52.cpp.i
+t59.cpp.i:
+	$(MAKE) -f CMakeFiles/t59.dir/build.make CMakeFiles/t59.dir/t59.cpp.i
+.PHONY : t59.cpp.i
 
-t52.s: t52.cpp.s
+t59.s: t59.cpp.s
 
-.PHONY : t52.s
+.PHONY : t59.s
 
 # target to generate assembly for a file
-t52.cpp.s:
-	$(MAKE) -f CMakeFiles/t52.dir/build.make CMakeFiles/t52.dir/t52.cpp.s
-.PHONY : t52.cpp.s
+t59.cpp.s:
+	$(MAKE) -f CMakeFiles/t59.dir/build.make CMakeFiles/t59.dir/t59.cpp.s
+.PHONY : t59.cpp.s
 
 # Help Target
 help:
@@ -156,12 +156,12 @@ help:
 	@echo "... all (the default if no target is provided)"
 	@echo "... clean"
 	@echo "... depend"
-	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... t52"
-	@echo "... t52.o"
-	@echo "... t52.i"
-	@echo "... t52.s"
+	@echo "... edit_cache"
+	@echo "... t59"
+	@echo "... t59.o"
+	@echo "... t59.i"
+	@echo "... t59.s"
 .PHONY : help
 
 
