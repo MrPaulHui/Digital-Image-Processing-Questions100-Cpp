@@ -656,3 +656,30 @@ cv::Mat bilinear_interpolation(cv::Mat img, double scale_y, double scale_x){
     }
     return out;
 }
+
+inline int connected_number_pixel(cv::Mat img, int i, int j, bool four=true){
+    int height = img.rows;
+    int width = img.cols;
+    int x1,x2,x3,x4,x5,x6,x7,x8;
+    int S;
+    x1 = img.at<uchar>(i,fmin(j+1,width-1))/255; //要时刻注意边界情况
+    x2 = img.at<uchar>(fmax(i-1,0),fmin(j+1,width-1))/255;
+    x3 = img.at<uchar>(fmax(i-1,0),j)/255;
+    x4 = img.at<uchar>(fmax(i-1,0),fmax(j-1,0))/255;
+    x5 = img.at<uchar>(i,fmax(j-1,0))/255;
+    x6 = img.at<uchar>(fmin(i+1,height-1),fmax(j-1,0))/255;
+    x7 = img.at<uchar>(fmin(i+1,height-1),j)/255;
+    x8 = img.at<uchar>(fmin(i+1,height-1),fmin(j+1,width-1))/255;
+    if(four==false){
+        x1 = 1-x1;
+        x2 = 1-x2;
+        x3 = 1-x3;
+        x4 = 1-x4;
+        x5 = 1-x5;
+        x6 = 1-x6;
+        x7 = 1-x7;
+        x8 = 1-x8;
+    }
+    S = (x1-x1*x2*x3)+(x3-x3*x4*x5)+(x5-x5*x6*x7)+(x7-x7*x8*x1);
+    return S;
+}
