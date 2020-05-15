@@ -56,17 +56,6 @@ CMAKE_BINARY_DIR = /home/paul/work/CV/DIP100/build
 #=============================================================================
 # Targets provided globally by CMake.
 
-# Special rule for the target rebuild_cache
-rebuild_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
-	/usr/local/bin/cmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
-.PHONY : rebuild_cache
-
-# Special rule for the target rebuild_cache
-rebuild_cache/fast: rebuild_cache
-
-.PHONY : rebuild_cache/fast
-
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
@@ -77,6 +66,17 @@ edit_cache:
 edit_cache/fast: edit_cache
 
 .PHONY : edit_cache/fast
+
+# Special rule for the target rebuild_cache
+rebuild_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
+	/usr/local/bin/cmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+.PHONY : rebuild_cache
+
+# Special rule for the target rebuild_cache
+rebuild_cache/fast: rebuild_cache
+
+.PHONY : rebuild_cache/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -111,44 +111,44 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named t66-69
+# Target rules for targets named t70-72
 
 # Build rule for target.
-t66-69: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 t66-69
-.PHONY : t66-69
+t70-72: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 t70-72
+.PHONY : t70-72
 
 # fast build rule for target.
-t66-69/fast:
-	$(MAKE) -f CMakeFiles/t66-69.dir/build.make CMakeFiles/t66-69.dir/build
-.PHONY : t66-69/fast
+t70-72/fast:
+	$(MAKE) -f CMakeFiles/t70-72.dir/build.make CMakeFiles/t70-72.dir/build
+.PHONY : t70-72/fast
 
-t66-69.o: t66-69.cpp.o
+t70-72.o: t70-72.cpp.o
 
-.PHONY : t66-69.o
+.PHONY : t70-72.o
 
 # target to build an object file
-t66-69.cpp.o:
-	$(MAKE) -f CMakeFiles/t66-69.dir/build.make CMakeFiles/t66-69.dir/t66-69.cpp.o
-.PHONY : t66-69.cpp.o
+t70-72.cpp.o:
+	$(MAKE) -f CMakeFiles/t70-72.dir/build.make CMakeFiles/t70-72.dir/t70-72.cpp.o
+.PHONY : t70-72.cpp.o
 
-t66-69.i: t66-69.cpp.i
+t70-72.i: t70-72.cpp.i
 
-.PHONY : t66-69.i
+.PHONY : t70-72.i
 
 # target to preprocess a source file
-t66-69.cpp.i:
-	$(MAKE) -f CMakeFiles/t66-69.dir/build.make CMakeFiles/t66-69.dir/t66-69.cpp.i
-.PHONY : t66-69.cpp.i
+t70-72.cpp.i:
+	$(MAKE) -f CMakeFiles/t70-72.dir/build.make CMakeFiles/t70-72.dir/t70-72.cpp.i
+.PHONY : t70-72.cpp.i
 
-t66-69.s: t66-69.cpp.s
+t70-72.s: t70-72.cpp.s
 
-.PHONY : t66-69.s
+.PHONY : t70-72.s
 
 # target to generate assembly for a file
-t66-69.cpp.s:
-	$(MAKE) -f CMakeFiles/t66-69.dir/build.make CMakeFiles/t66-69.dir/t66-69.cpp.s
-.PHONY : t66-69.cpp.s
+t70-72.cpp.s:
+	$(MAKE) -f CMakeFiles/t70-72.dir/build.make CMakeFiles/t70-72.dir/t70-72.cpp.s
+.PHONY : t70-72.cpp.s
 
 # Help Target
 help:
@@ -156,12 +156,12 @@ help:
 	@echo "... all (the default if no target is provided)"
 	@echo "... clean"
 	@echo "... depend"
-	@echo "... rebuild_cache"
 	@echo "... edit_cache"
-	@echo "... t66-69"
-	@echo "... t66-69.o"
-	@echo "... t66-69.i"
-	@echo "... t66-69.s"
+	@echo "... rebuild_cache"
+	@echo "... t70-72"
+	@echo "... t70-72.o"
+	@echo "... t70-72.i"
+	@echo "... t70-72.s"
 .PHONY : help
 
 
