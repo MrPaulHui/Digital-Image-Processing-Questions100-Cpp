@@ -34,6 +34,10 @@
 
 另一个点，滤波其实是对每个像素点进行操作，输出操作（融合周围的信息以达到某种运算目的（梯度，二阶微分...））后的像素点。
 
+还一个点，用**梯度来检测边缘的原理**：梯度其实就是相邻像素之间的变化量，边缘的外边的像素点与里面的像素点存在巨大的变化，所以体现在梯度上，就是梯度值很大（应该说绝对值）；而在内部区域，像素点之间变化很小，对应的梯度就很小。由此，还可以引出一个点，就是梯度方向和边缘方向垂直。
+
+还一个点，内部区域的像素点不论是一阶微分还是二阶微分都是0。这个点对于一阶微分检测边缘没有影响，因为一阶就是找一阶微分的极值点，0肯定不是。对于二阶微分检测是有影响的，因为理论上讲，二阶微分应该是检测二阶微分的过零点，但内部点的二阶微分也是0，但这些点肯定不是边缘。所以二阶微分还是用越大越是边缘的思路，因为边缘点很难做到一定是0。
+
 - max-min滤波器。t13。原理：图像的细节属于低频信息，图像的边缘属于高频信息。我们使用一定大小的 Max-Min 滤波器作用于图像，当滤波器作用于图像细节时，输出结果往往趋向于0（黑色）；而滤波器作用于图像边缘时，Max-Min 输出结果往往趋向于255（白色）。所以 最大-最小滤波器 能有效地用于检测图像的边缘和轮廓。
 
 - Emboss滤波器。常用于检测图像的边缘和轮廓，能够有效地增强图像的高频信息（边缘和轮廓），并保留图像的低频信息（图像内容）。t18。**类似有点浮雕效果？**
@@ -58,6 +62,12 @@ https://blog.csdn.net/xiahn1a/article/details/42141429
 $$
 G = \sqrt{G_x^2+G_y^2} \approx |G_x| +|G_y|
 $$
+
+梯度方向：
+$$
+\text{tan}=\arctan(\frac{G_y}{G_x})
+$$
+一阶微分其实一个更重要的作用是求梯度图，这在hog特征等特征提取中均有体现。
 
 
 - 差分滤波器。使用的直接相邻的差值为梯度。t14。
@@ -156,6 +166,12 @@ $$
 
 #### 二阶
 
+二阶微分的过零点为要检测的边缘
+
+参考：https://blog.csdn.net/u014485485/article/details/78364573
+
+二阶微分具有旋转不变性，但同时也因此失去了边缘的方向信息，所以后面canny边缘检测、hog特征提取，都是用的一阶微分，以得到梯度的方向信息。
+
 - Laplacian滤波器。最基本的二阶。原理其实是求每个像素点的散度。t17。
 
   推导过程：
@@ -203,6 +219,35 @@ $$
   \nabla^2Guassian_\sigma=\frac{x^2+y^2-\sigma^2}{2\pi\sigma^6}exp(-\frac{x^2+y^2}{2\sigma^2})
   $$
   
+
+- DoG滤波器。https://blog.csdn.net/u014485485/article/details/78364573 用差分的方法取代LoG的计算，但可以达到LoG的效果。教程里的t74就是变相的DoG，只是直接用的插值尺度变换来代替高斯滤波了。
+
+  推导过程：
+
+  LoG算子对$\sigma$求导，有
+  $$
+  \frac{\partial\nabla^2Guassian_\sigma}{\partial \sigma}=\frac{x^2+y^2-\sigma^2}{2\pi\sigma^5}exp(-\frac{x^2+y^2}{2\sigma^2})=\sigma \nabla^2Guassian_\sigma
+  $$
+  从导数定义出发，有
+  $$
+  \frac{\partial\nabla^2Guassian_\sigma}{\partial \sigma}=\lim_{\triangle \sigma\to0}\frac{Guassian_{\sigma+\triangle\sigma}(x,y)-Guassian_\sigma(x,y)}{(\sigma+\triangle\sigma)-\sigma}\\\
+  approx \frac{Guassian_{k\sigma}(x,y)-Guassian_\sigma(x,y)}{(k-1)\sigma}
+  $$
+  综合上面两式，可以得到
+  $$
+  \nabla^2Guassian_\sigma=\frac{Guassian_{k\sigma}(x,y)-Guassian_\sigma(x,y)}{(k-1)\sigma^2}
+  $$
+  忽略掉分母的常系数，可以用
+  $$
+  Guassian_{k\sigma}(x,y)-Guassian_\sigma(x,y)
+  $$
+  近似表示LoG算子，这个本身就叫做DoG算子，D是差分的意思
+
+  最终，得到
+  $$
+  DoG(f)=Guassian_{k\sigma}(x,y)-Guassian_\sigma(x,y)
+  $$
+  用这个算子与图像做卷积操作，即可。
 
 ## 直方图系列
 
@@ -1099,3 +1144,11 @@ https://www.cnblogs.com/alexme/p/11361563.html
 基本原理：先做hsv变换，得到h颜色空间，根据要追踪颜色的h范围，确定其位置即可
 
 官方教程关于这一块讲的不错，可以参考之。
+
+## 高斯金字塔
+
+参考：https://www.cnblogs.com/wynlfd/p/9704770.html
+
+### 显著图 saliency map
+
+传统方法：通过高斯金字塔的两两差分再叠加可以得到

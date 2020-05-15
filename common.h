@@ -657,6 +657,29 @@ cv::Mat bilinear_interpolation(cv::Mat img, double scale_y, double scale_x){
     return out;
 }
 
+cv::Mat bilinear_interpolation_gray(cv::Mat img, double scale_y, double scale_x){
+    int height = img.rows;
+    int width = img.cols;
+    int out_height = (int)(height*scale_y);
+    int out_width = (int)(width*scale_x);
+    cv::Mat out = cv::Mat::zeros(out_height, out_width, CV_8UC1);
+    int x, y;
+    double dx, dy;
+    double val;
+    for(int i=0;i<out_height;i++){
+        y = floor(i/scale_y);
+        dy = i/scale_y - y;
+        for(int j=0;j<out_width;j++){
+            x = floor(j/scale_x);
+            dx = j/scale_x - x;
+            val = (1-dx)*(1-dy)*(double)img.at<uchar>(y,x) + dx*(1-dy)*(double)img.at<uchar>(y,x+1) + 
+                      (1-dx)*dy*(double)img.at<uchar>(y+1,x) + dx*dy*(double)img.at<uchar>(y+1,x+1);
+            out.at<uchar>(i,j) = (uchar)val;
+        }
+    }
+    return out;
+}
+
 inline int connected_number_pixel(cv::Mat img, int i, int j, bool four=true){
     int height = img.rows;
     int width = img.cols;
