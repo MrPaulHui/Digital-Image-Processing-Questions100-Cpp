@@ -56,17 +56,6 @@ CMAKE_BINARY_DIR = /home/paul/work/CV/DIP100/build
 #=============================================================================
 # Targets provided globally by CMake.
 
-# Special rule for the target edit_cache
-edit_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
-	/usr/local/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
-.PHONY : edit_cache
-
-# Special rule for the target edit_cache
-edit_cache/fast: edit_cache
-
-.PHONY : edit_cache/fast
-
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
@@ -77,6 +66,17 @@ rebuild_cache:
 rebuild_cache/fast: rebuild_cache
 
 .PHONY : rebuild_cache/fast
+
+# Special rule for the target edit_cache
+edit_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
+	/usr/local/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+.PHONY : edit_cache
+
+# Special rule for the target edit_cache
+edit_cache/fast: edit_cache
+
+.PHONY : edit_cache/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -111,44 +111,44 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named t76
+# Target rules for targets named t82-83
 
 # Build rule for target.
-t76: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 t76
-.PHONY : t76
+t82-83: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 t82-83
+.PHONY : t82-83
 
 # fast build rule for target.
-t76/fast:
-	$(MAKE) -f CMakeFiles/t76.dir/build.make CMakeFiles/t76.dir/build
-.PHONY : t76/fast
+t82-83/fast:
+	$(MAKE) -f CMakeFiles/t82-83.dir/build.make CMakeFiles/t82-83.dir/build
+.PHONY : t82-83/fast
 
-t76.o: t76.cpp.o
+t82-83.o: t82-83.cpp.o
 
-.PHONY : t76.o
+.PHONY : t82-83.o
 
 # target to build an object file
-t76.cpp.o:
-	$(MAKE) -f CMakeFiles/t76.dir/build.make CMakeFiles/t76.dir/t76.cpp.o
-.PHONY : t76.cpp.o
+t82-83.cpp.o:
+	$(MAKE) -f CMakeFiles/t82-83.dir/build.make CMakeFiles/t82-83.dir/t82-83.cpp.o
+.PHONY : t82-83.cpp.o
 
-t76.i: t76.cpp.i
+t82-83.i: t82-83.cpp.i
 
-.PHONY : t76.i
+.PHONY : t82-83.i
 
 # target to preprocess a source file
-t76.cpp.i:
-	$(MAKE) -f CMakeFiles/t76.dir/build.make CMakeFiles/t76.dir/t76.cpp.i
-.PHONY : t76.cpp.i
+t82-83.cpp.i:
+	$(MAKE) -f CMakeFiles/t82-83.dir/build.make CMakeFiles/t82-83.dir/t82-83.cpp.i
+.PHONY : t82-83.cpp.i
 
-t76.s: t76.cpp.s
+t82-83.s: t82-83.cpp.s
 
-.PHONY : t76.s
+.PHONY : t82-83.s
 
 # target to generate assembly for a file
-t76.cpp.s:
-	$(MAKE) -f CMakeFiles/t76.dir/build.make CMakeFiles/t76.dir/t76.cpp.s
-.PHONY : t76.cpp.s
+t82-83.cpp.s:
+	$(MAKE) -f CMakeFiles/t82-83.dir/build.make CMakeFiles/t82-83.dir/t82-83.cpp.s
+.PHONY : t82-83.cpp.s
 
 # Help Target
 help:
@@ -156,12 +156,12 @@ help:
 	@echo "... all (the default if no target is provided)"
 	@echo "... clean"
 	@echo "... depend"
-	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... t76"
-	@echo "... t76.o"
-	@echo "... t76.i"
-	@echo "... t76.s"
+	@echo "... edit_cache"
+	@echo "... t82-83"
+	@echo "... t82-83.o"
+	@echo "... t82-83.i"
+	@echo "... t82-83.s"
 .PHONY : help
 
 

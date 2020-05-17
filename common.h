@@ -124,6 +124,37 @@ cv::Mat Conv_Gray_HD(cv::Mat img, cv::Mat kernel, bool need_pad=true){
     return out;
 }
 
+cv::Mat Conv_Gray_HD2(cv::Mat img, cv::Mat kernel, bool need_pad=true){
+    // stride只能为1
+    // 输出最高精度的Mat结果，用于计算梯度图的梯度。
+    int k_size = kernel.rows;
+    int height = img.rows;
+    int width = img.cols;
+    int pad_size = floor(k_size/2);
+    if(need_pad){
+        cv::Mat pads = cv::Mat::zeros(height+2*pad_size, width+2*pad_size, CV_64FC1);
+        for(int i=0;i<height;i++){
+            for(int j=0;j<width;j++){
+                pads.at<double>(i+pad_size,j+pad_size) = img.at<double>(i,j);
+            }
+        }
+        img = pads.clone();
+    }
+    cv::Mat out = cv::Mat::zeros(height-k_size+1, width-k_size+1, CV_64FC1);
+    for(int i=0;i<height-k_size+1;i++){
+        for(int j=0;j<width-k_size+1;j++){
+            double sum = 0;
+            for(int ii=0;ii<k_size;ii++){
+                for(int jj=0;jj<k_size;jj++){
+                    sum += kernel.at<double>(ii,jj) * img.at<double>(i+ii,j+jj);
+                }
+            }
+            out.at<double>(i,j) = sum;
+        }
+    }
+    return out;
+}
+
 cv::Mat get_guassian_kernel(double sigma, int k_size){
     double kernel[k_size][k_size];
     double pad = floor(k_size/2);
@@ -147,11 +178,17 @@ cv::Mat get_guassian_kernel(double sigma, int k_size){
     return out;
 }
 
-cv::Mat Guassian_Filter(cv::Mat img, double sigma, int k_size){
+cv::Mat Guassian_Filter(cv::Mat img, double sigma, int k_size, bool use_HD=false){
     cv::Mat kernel = get_guassian_kernel(sigma, k_size);
     int channel = img.channels();
     if(channel==1){
-        return Conv_Gray(img, kernel,true,true);
+        if(use_HD){
+            if(img.type()==6) return Conv_Gray_HD2(img, kernel,true); //type api https://blog.csdn.net/renhaofan/article/details/81207924
+            else return Conv_Gray_HD(img, kernel,true);
+        }
+        else{
+            return Conv_Gray(img, kernel,true,true);
+        }
     }
     else{
         return Conv(img, kernel,true,true);
