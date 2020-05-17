@@ -5,7 +5,7 @@ digital image processing questions and codes
 | -------------- | ------------------------------------------------------------ | -------- |
 | 大津二值化算法 | [t4](https://github.com/MrPaulHui/DIP100/blob/master/t4.cpp) |          |
 | HSV变换        | [t5](https://github.com/MrPaulHui/DIP100/blob/master/t5.cpp) |          |
-| 池化           |                                                              |          |
+| 池化           | [t7](https://github.com/MrPaulHui/DIP100/blob/master/t7.cpp) 平均池化<br>[t8](https://github.com/MrPaulHui/DIP100/blob/master/t8.cpp) 最大池化 |          |
 | 降噪滤波器     |                                                              |          |
 | 边缘检测滤波器 |                                                              |          |
 | 其他滤波器     |                                                              |          |
