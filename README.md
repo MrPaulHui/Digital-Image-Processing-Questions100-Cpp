@@ -28,3 +28,17 @@ digital image processing questions and codes
 | Gabor滤波      |                                                              |
 | 小知识点       | 透明混合 [t60](https://github.com/MrPaulHui/DIP100/blob/master/t60.cpp) |
 
+## 补充
+
+| 知识点        | 对应实现 |
+| ------------- | -------- |
+| 积分图        |          |
+| 盒子滤波器    |          |
+| harr-like特征 |          |
+| 保边滤波      |          |
+| SIFT          |          |
+|               |          |
+|               |          |
+|               |          |
+|               |          |
+
