@@ -826,3 +826,84 @@ cv::Mat HSV2RGB(cv::Mat img){
     }
     return rgb;
 }
+
+cv::Mat* DFT_advanced(cv::Mat img){
+    //速度秒杀原始版本，原理见https://www.jianshu.com/p/98f493de01db
+    //这里是把实部和虚部分开计算，IDFT的advanced版本同理，矩阵拆开相乘再相加
+    int height = img.rows;
+    int width = img.cols;
+    int channel = img.channels();
+    if(channel==3){
+        img = ToGray(img);
+    }
+    cv::Mat real;
+    cv::Mat imag;
+    cv::Mat G11 = cv::Mat::zeros(height, height, CV_64FC1);
+    cv::Mat G12 = cv::Mat::zeros(height, height, CV_64FC1);
+    cv::Mat G21 = cv::Mat::zeros(width, width, CV_64FC1);
+    cv::Mat G22 = cv::Mat::zeros(width, width, CV_64FC1);
+    double angle;
+    for(int i=0;i<height;i++){
+        for(int j=0;j<height;j++){
+            angle = -2 * M_PI * (double)i*(double)j/(double)height;
+            G11.at<double>(i,j) = cos(angle);
+            G12.at<double>(i,j) = sin(angle);
+        }
+    }
+    for(int i=0;i<width;i++){
+        for(int j=0;j<width;j++){
+            angle = -2 * M_PI * (double)i*(double)j/(double)width;
+            G21.at<double>(i,j) = cos(angle);
+            G22.at<double>(i,j) = sin(angle);
+        }
+    }
+    cv::Mat I;
+    img.convertTo(I, CV_64F);
+    real = G11*I*G21-G12*I*G22;
+    imag = G11*I*G22+G12*I*G21;
+    real = real/sqrt(height*width);
+    imag = imag/sqrt(height*width);
+    static cv::Mat fourier_result[2];
+    fourier_result[0] = real;
+    fourier_result[1] = imag;
+    return fourier_result;
+}
+
+cv::Mat IDFT_advanced(cv::Mat* fourier_result){
+    cv::Mat real = *fourier_result;
+    cv::Mat imag = *(fourier_result+1);
+    int height = real.rows;
+    int width = real.cols;
+    cv::Mat img;
+    cv::Mat img_real, img_imag;
+    cv::Mat G31 = cv::Mat::zeros(height, height, CV_64FC1);
+    cv::Mat G32 = cv::Mat::zeros(height, height, CV_64FC1);
+    cv::Mat G41 = cv::Mat::zeros(width, width, CV_64FC1);
+    cv::Mat G42 = cv::Mat::zeros(width, width, CV_64FC1);
+    double angle;
+    for(int i=0;i<height;i++){
+        for(int j=0;j<height;j++){
+            angle = 2 * M_PI * (double)i*(double)j/(double)height;
+            G31.at<double>(i,j) = cos(angle);
+            G32.at<double>(i,j) = sin(angle);
+        }
+    }
+    for(int i=0;i<width;i++){
+        for(int j=0;j<width;j++){
+            angle = 2 * M_PI * (double)i*(double)j/(double)width;
+            G41.at<double>(i,j) = cos(angle);
+            G42.at<double>(i,j) = sin(angle);
+        }
+    }
+    img_real = G31*real*G41-G31*imag*G42-G32*real*G42-G32*imag*G41;
+    img_imag = G31*real*G42+G31*imag*G41+G32*real*G41-G32*imag*G42;
+    img = img_real.mul(img_real) + img_imag.mul(img_imag);
+    for(int i=0;i<height;i++){
+        for(int j=0;j<width;j++){
+            img.at<double>(i,j) = sqrt(img.at<double>(i,j))/sqrt(height*width);
+        }
+    }
+    cv::Mat img_;
+    img.convertTo(img_, CV_8U);
+    return img_;
+}
