@@ -23,7 +23,7 @@ digital image processing questions and codes
 | 色彩追踪       | [t70-72](https://github.com/MrPaulHui/DIP100/blob/master/t70-72.cpp) |
 | 金字塔         | 实现金字塔 [t73](https://github.com/MrPaulHui/DIP100/blob/master/t73.cpp) [t75](https://github.com/MrPaulHui/DIP100/blob/master/t75.cpp)<br>显著图 [t76](https://github.com/MrPaulHui/DIP100/blob/master/t76.cpp) |
 | Harris角点检测 | [t82-83](https://github.com/MrPaulHui/DIP100/blob/master/t82-83.cpp) |
-| 傅里叶变换     |                                                              |
+| 傅里叶变换     | 正变换反变换 [t32](https://github.com/MrPaulHui/DIP100/blob/master/t32.cpp)<br>低通滤波 [t33](https://github.com/MrPaulHui/DIP100/blob/master/t33.cpp)<br>高通滤波 [t34](https://github.com/MrPaulHui/DIP100/blob/master/t34.cpp)<br>带通滤波 [t35](https://github.com/MrPaulHui/DIP100/blob/master/t35.cpp) |
 | JPEG压缩       |                                                              |
 | Gabor滤波      |                                                              |
 | 小知识点       | 透明混合 [t60](https://github.com/MrPaulHui/DIP100/blob/master/t60.cpp) |
