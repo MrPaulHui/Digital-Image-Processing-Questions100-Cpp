@@ -1,6 +1,9 @@
 #pragma once
 #include <math.h>
+#include <vector>
+#include <stdexcept>
 #include "opencv2/imgproc/imgproc.hpp"
+using namespace std;
 cv::Mat ToGray(cv::Mat img){ //img的格式是bgr
     int h = img.rows;
     int w = img.cols;
@@ -906,4 +909,240 @@ cv::Mat IDFT_advanced(cv::Mat* fourier_result){
     cv::Mat img_;
     img.convertTo(img_, CV_8U);
     return img_;
+}
+
+cv::Mat DCT(cv::Mat img, cv::Mat* A_pointer=nullptr){
+    int height = img.rows;
+    int width = img.cols;
+    if(height != width){
+        throw runtime_error("the height must equal to width");
+    }
+    int channel = img.channels();
+    cv::Mat A;
+    if(A_pointer==nullptr){
+        A = cv::Mat::zeros(height, width, CV_64FC1);
+        double coff;
+        for(int u=0;u<height;u++){
+            for(int x=0;x<height;x++){
+                if(u==0){
+                    coff = sqrt(1/(double)height);
+                }
+                else{
+                    coff = sqrt(2/(double)height);
+                }
+                A.at<double>(u,x) = coff*cos((x+0.5)*M_PI*(double)u/(double)height);
+            }
+        }
+    }
+    else{
+        A = *A_pointer;
+    }
+    cv::Mat img_HD;
+    if(img.type()!=22){
+        img.convertTo(img_HD, CV_64F);
+    }
+    else{
+        img_HD = img.clone();
+    }
+    cv::Mat out;
+    if(channel==3){
+        vector<cv::Mat> imgs(3);
+        cv::split(img_HD, imgs);
+        vector<cv::Mat> dcts;
+        for(int i=0;i<3;i++){
+            dcts.push_back(A*imgs[i]*(A.t()));
+        }
+        cv::merge(dcts, out);
+    }
+    else{
+        out = A*img_HD*(A.t());
+    }
+    return out;
+}
+
+cv::Mat IDCT(cv::Mat dct, int want_K=0, cv::Mat* A_pointer=nullptr, bool output_8U=true){
+    int height = dct.rows;
+    int width = dct.cols;
+    int channel = dct.channels();
+    cv::Mat A;
+    if(A_pointer==nullptr){
+        A = cv::Mat::zeros(height, width, CV_64FC1);
+        int K;
+        if(want_K<=0 || want_K>height){
+            K = height;
+        }
+        else{
+            K = want_K;
+        }
+        double coff;
+        for(int u=0;u<K;u++){
+            for(int x=0;x<height;x++){
+                if(u==0){
+                    coff = sqrt(1/(double)height);
+                }
+                else{
+                    coff = sqrt(2/(double)height);
+                }
+                A.at<double>(u,x) = coff*cos((x+0.5)*M_PI*(double)u/(double)height);
+            }
+        }
+    }
+    else{
+        A = *A_pointer;
+    }
+    cv::Mat img;
+    if(channel==3){
+        vector<cv::Mat> dcts(3);
+        cv::split(dct, dcts);
+        vector<cv::Mat> imgs;
+        for(int i=0;i<3;i++){
+            imgs.push_back((A.t())*dcts[i]*A);
+        }
+        cv::merge(imgs, img);
+    }
+    else{
+        img = (A.t())*dct*A;
+    }
+    cv::Mat out;
+    if(output_8U){
+        img.convertTo(out, CV_8U);
+    }
+    else{
+        out = img.clone();
+    }
+    return out;
+}
+
+cv::Mat DCT_JPEG(cv::Mat img, int block_size=8){
+    //do 8*8 dct on a total img
+    int height = img.rows;
+    int width = img.cols;
+    cv::Mat A = cv::Mat::zeros(block_size, block_size, CV_64FC1);
+    double coff;
+    for(int u=0;u<block_size;u++){
+        for(int x=0;x<block_size;x++){
+            if(u==0){
+                coff = sqrt(1/(double)block_size);
+            }
+            else{
+                coff = sqrt(2/(double)block_size);
+            }
+            A.at<double>(u,x) = coff*cos((x+0.5)*M_PI*(double)u/(double)block_size);
+        }
+    }
+    cv::Mat out = cv::Mat::zeros(height, width, CV_64FC3);
+    cv::Mat block, block_dct;
+    for(int i=0;i<height;i+=block_size){
+        for(int j=0;j<width;j+=block_size){
+            cv::Rect rect(i,j,block_size,block_size);
+            block = cv::Mat(img, rect);
+            block_dct = DCT(block, &A);
+            block_dct.copyTo(out(rect));
+        }
+    }
+    return out;
+}
+
+cv::Mat IDCT_JPEG(cv::Mat dct, int want_K=0, int block_size=8, bool output_8U=true){
+    //do 8*8 idct on a total img
+    int height = dct.rows;
+    int width = dct.cols;
+    cv::Mat A = cv::Mat::zeros(block_size, block_size, CV_64FC1);
+    int K;
+    if(want_K<=0 || want_K>block_size){
+        K = block_size;
+    }
+    else{
+        K = want_K;
+    }
+    double coff;
+    for(int u=0;u<K;u++){
+        for(int x=0;x<block_size;x++){
+            if(u==0){
+                coff = sqrt(1/(double)block_size);
+            }
+            else{
+                coff = sqrt(2/(double)block_size);
+            }
+            A.at<double>(u,x) = coff*cos((x+0.5)*M_PI*(double)u/(double)block_size);
+        }
+    }
+    cv::Mat img;
+    if(output_8U){
+        img = cv::Mat::zeros(height, width, CV_8UC3);
+    }
+    else{
+        img = cv::Mat::zeros(height, width, CV_64FC3);
+    }
+    cv::Mat block, block_dct;
+    for(int i=0;i<height;i+=block_size){
+        for(int j=0;j<width;j+=block_size){
+            cv::Rect rect(i,j,block_size,block_size);
+            block_dct = cv::Mat(dct, rect);
+            block = IDCT(block_dct, K, &A);
+            block.copyTo(img(rect));
+        }
+    }
+    return img;
+}
+
+cv::Mat BGR2YCbCr(cv::Mat bgr){
+    int height = bgr.rows;
+    int width = bgr.cols;
+    cv::Mat ycbcr = cv::Mat::zeros(height, width, CV_64FC3);
+    double b,g,r;
+    double y,cb,cr;
+    for(int i=0;i<height;i++){
+        for(int j=0;j<width;j++){
+            b = (double)bgr.at<cv::Vec3b>(i,j)[0];
+            g = (double)bgr.at<cv::Vec3b>(i,j)[1];
+            r = (double)bgr.at<cv::Vec3b>(i,j)[2];
+            y = 0.299*r+0.5870*g+0.114*b;
+            cb = -0.1687*r-0.3313*g+0.5*b+128;
+            cr = 0.5*r-0.4187*g-0.0813*b+128;
+            ycbcr.at<cv::Vec3d>(i,j)[0] = y;
+            ycbcr.at<cv::Vec3d>(i,j)[1] = cb;
+            ycbcr.at<cv::Vec3d>(i,j)[2] = cr;
+        }
+    }
+    return ycbcr;
+}
+
+cv::Mat YCbCr2BGR(cv::Mat ycbcr){
+    int height = ycbcr.rows;
+    int width = ycbcr.cols;
+    cv::Mat bgr = cv::Mat::zeros(height, width, CV_8UC3);
+    double b,g,r;
+    double y,cb,cr;
+    for(int i=0;i<height;i++){
+        for(int j=0;j<width;j++){
+            y = ycbcr.at<cv::Vec3d>(i,j)[0];
+            cb = ycbcr.at<cv::Vec3d>(i,j)[1];
+            cr = ycbcr.at<cv::Vec3d>(i,j)[2];
+            r = y+(cr-128)*1.402;
+            g = y-(cb-128)*0.3441-(cr-128)*0.7139;
+            b = y+(cb-128)*1.7718;
+            bgr.at<cv::Vec3b>(i,j)[0] = b;
+            bgr.at<cv::Vec3b>(i,j)[1] = g;
+            bgr.at<cv::Vec3b>(i,j)[2] = r;
+        }
+    }
+    return bgr;
+}
+
+double PSNR(cv::Mat test_img, cv::Mat standard_img){
+    int height = test_img.rows;
+    int width = test_img.cols;
+    int channel = test_img.channels();
+    double mse = 0;
+    for(int i=0;i<height;i++){
+        for(int j=0;j<width;j++){
+            for(int c=0;c<channel;c++){
+                mse += pow((double)test_img.at<cv::Vec3b>(i,j)[c]-(double)standard_img.at<cv::Vec3b>(i,j)[c], 2);
+            }
+        }
+    }
+    mse /= (height*width*channel);
+    double psnr = 10*log10(255.0*255.0/mse);
+    return psnr;
 }

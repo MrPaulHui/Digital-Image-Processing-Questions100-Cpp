@@ -303,7 +303,13 @@ $$
 out = img1*\alpha+img2*(1-\alpha)
 $$
 
+### HSV空间
 
+H：色相；S：饱和度；V：明度
+
+### YCbCr空间
+
+Y：亮度；Cb：蓝色色度；Cr：红色色度
 
 ## 插值
 
@@ -1331,3 +1337,110 @@ $$
 一种用矩阵相乘取代循环的方法：https://www.jianshu.com/p/98f493de01db
 
 变换后的频域图，高频集中在图中心，低频在四角。且关于中心点呈中心对称。
+
+## DCT 离散余弦变换
+
+参考：https://www.cnblogs.com/wyuzl/p/7880124.html
+
+### 正变换
+
+#### 一般形式
+
+$$
+0\leq u,\ v\leq N\\
+F(u,v)=C(u)\  C(v)\ \sum\limits_{y=0}^{N-1}\ \sum\limits_{x=0}^{N-1}\ I(x,y)\  \cos(\frac{(x+0.5)\  u\  \pi}{N}) \cos(\frac{(y+0.5)\  v\  \pi}{N})\\
+C(u)=
+\begin{cases}
+\sqrt\frac{1}{N}& (\text{if}\ u=0)\\
+\sqrt\frac{2}{N}&(\text{else})
+\end{cases}
+$$
+
+其中N为图像的尺寸，这里只考虑height和width相等的情况。
+
+#### 矩阵形式
+
+$$
+F=A\ I\ B
+$$
+
+其中，
+$$
+A =\left[
+\begin{matrix}
+c(0)\cos\frac{(0+0.5)\pi*0}{N}&c(0)\cos\frac{(1+0.5)\pi*0}{N}&...&c(0)\cos\frac{(N-1+0.5)\pi*0}{N}\\
+c(1)\cos\frac{(0+0.5)\pi*1}{N}&c(1)\cos\frac{(1+0.5)\pi*1}{N}&...&c(1)\cos\frac{(N-1+0.5)\pi*1}{N}\\
+...\\
+...\\
+c(N-1)\cos\frac{(0+0.5)\pi*(N-1)}{N}&c(N-1)\cos\frac{(1+0.5)\pi*(N-1)}{N}&...&c(N-1)\cos\frac{(N-1+0.5)\pi*(N-1)}{N}
+\end{matrix}
+\right]
+$$
+元素规律为：
+$$
+A(u,x)=c(u)\cos\frac{(x+0.5)\pi u}{N}
+$$
+
+$$
+B =\left[
+\begin{matrix}
+c(0)\cos\frac{(0+0.5)\pi*0}{N}&c(1)\cos\frac{(0+0.5)\pi*1}{N}&...&c(N-1)\cos\frac{(0+0.5)\pi*(N-1)}{N}\\
+c(0)\cos\frac{(1+0.5)\pi*1}{N}&c(1)\cos\frac{(1+0.5)\pi*1}{N}&...&c(N-1)\cos\frac{(1+0.5)\pi*(N-1)}{N}\\
+...\\
+...\\
+c(0)\cos\frac{(N-1+0.5)\pi*0}{N}&c(1)\cos\frac{(N-1+0.5)\pi*1}{N}&...&c(N-1)\cos\frac{(N-1+0.5)\pi*(N-1)}{N}
+\end{matrix}
+\right]
+$$
+
+元素规律为：
+$$
+B(y,v) = c(v)\cos\frac{(y+0.5)\pi v}{N}
+$$
+可以发现，$B=A^T$
+
+所以，最终矩阵形式为：
+$$
+F=A\ I\ A^T
+$$
+
+
+### 反变换
+
+#### 一般形式
+
+$$
+1\leq K\leq N\\
+f(x,y)=\sum\limits_{u=0}^{K-1}\sum\limits_{v=0}^{K-1}\ C(u)\ C(v)\ F(u,v)\ \cos(\frac{(x+0.5)\  u\  \pi}{N})\ \cos(\frac{(y+0.5)\  v\  \pi}{N})\\
+C(u)=
+\begin{cases}
+\sqrt\frac{1}{N}& (\text{if}\ u=0)\\
+\sqrt\frac{2}{N}&(\text{else})
+\end{cases}
+$$
+
+其中，K为决定反变换后得到图像分辨率的参数，K=N反变换得到原图，K=1或2得到图像比原图分辨率低很多（最低），合理选择K值，可以减小图像大小，即压缩。
+
+关于K值的原理解释：在变换之后，系数较大的集中在左上角，而右下角的几乎都是0，其中左上角的是低频分量，右下角的是高频分量，低频系数体现的是图像中目标的轮廓和灰度分布特性，高频系数体现的是目标形状的细节信息。DCT变换之后，能量主要集中在低频分量处，这也是DCT变换去相关性的一个体现。
+
+DCT和取K值的IDCT的组合变换后，可以对图像（数据）达到压缩效果。
+
+#### 矩阵形式
+
+一个重要的点，A矩阵为正交矩阵，$A^T=A^{-1}$
+
+根据正变换的矩阵形式，
+$$
+I=A^{-1}\ F\ (A^T)^{-1}=A^T\ F\ A
+$$
+这里是K=N的情况。
+
+若K<N，则F取前K行和前K列；A取前K行，列不变。
+
+## JPEG压缩
+
+可以参考官方教程给的算法
+
+有损压缩
+
+核心是通过DCT变换，量化DCT变换的系数，以减小存储量。
