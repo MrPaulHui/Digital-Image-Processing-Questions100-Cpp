@@ -25,7 +25,7 @@ digital image processing questions and codes
 | Harris角点检测    | [t82-83](https://github.com/MrPaulHui/DIP100/blob/master/t82-83.cpp) |
 | 傅里叶变换        | 正变换反变换 [t32](https://github.com/MrPaulHui/DIP100/blob/master/t32.cpp)<br>低通滤波 [t33](https://github.com/MrPaulHui/DIP100/blob/master/t33.cpp)<br>高通滤波 [t34](https://github.com/MrPaulHui/DIP100/blob/master/t34.cpp)<br>带通滤波 [t35](https://github.com/MrPaulHui/DIP100/blob/master/t35.cpp) |
 | JPEG压缩与DCT变换 | DCT正变换反变换 [t36](https://github.com/MrPaulHui/DIP100/blob/master/t36.cpp)<br>PSNR [t37](https://github.com/MrPaulHui/DIP100/blob/master/t37.cpp)<br>YCbCr空间 [t39](https://github.com/MrPaulHui/DIP100/blob/master/t39.cpp)<br>JPEG压缩 [t38_40](https://github.com/MrPaulHui/DIP100/blob/master/t38_40.cpp) |
-| Gabor滤波         |                                                              |
+| Gabor滤波         | [t77-80](https://github.com/MrPaulHui/DIP100/blob/master/t77-80.cpp) |
 | 小知识点          | 透明混合 [t60](https://github.com/MrPaulHui/DIP100/blob/master/t60.cpp) |
 
 ## 补充
