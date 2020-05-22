@@ -2,6 +2,7 @@
 #include <math.h>
 #include <vector>
 #include <stdexcept>
+#include <iostream>
 #include "opencv2/imgproc/imgproc.hpp"
 using namespace std;
 cv::Mat ToGray(cv::Mat img){ //img的格式是bgr
@@ -46,11 +47,42 @@ cv::Mat ZeroPadding_Gray(cv::Mat img, int pad_size=1){
     return out;
 }
 
-cv::Mat Conv_Gray(cv::Mat img, cv::Mat kernel, bool need_pad=true, bool need_clip=true){
+cv::Mat EdgePadding_Gray(cv::Mat img, int pad_size=1){
+    int h = img.rows;
+    int w = img.cols;
+    cv::Mat out = cv::Mat::zeros(h+2*pad_size, w+2*pad_size, CV_8UC1);
+    for(int i=0;i<h;i++){
+        for(int j=0;j<w;j++){
+            out.at<uchar>(i+pad_size,j+pad_size) = img.at<uchar>(i,j);
+        }
+    }
+    for(int i=pad_size-1;i>=0;i--){
+        for(int j=pad_size;j<w+pad_size;j++){
+            out.at<uchar>(i,j) = out.at<uchar>(i+1,j);
+        }
+    }
+    for(int i=h+pad_size;i<h+2*pad_size;i++){
+        for(int j=pad_size;j<w+pad_size;j++){
+            out.at<uchar>(i,j) = out.at<uchar>(i-1,j);
+        }
+    }
+    for(int i=0;i<h+2*pad_size;i++){
+        for(int j=pad_size-1;j>=0;j--){
+            out.at<uchar>(i,j) = out.at<uchar>(i,j+1);
+        }
+        for(int j=w+pad_size;j<w+2*pad_size;j++){
+            out.at<uchar>(i,j) = out.at<uchar>(i,j-1);
+        }
+    }
+    return out;
+}
+
+cv::Mat Conv_Gray(cv::Mat img, cv::Mat kernel, bool need_pad=true, bool need_clip=true, bool edge_pad=false){
     // stride只能为1
     int k_size = kernel.rows;
     if(need_pad){
-        img = ZeroPadding_Gray(img, floor(k_size/2));
+        if(edge_pad) img = EdgePadding_Gray(img, floor(k_size/2));
+        else img = ZeroPadding_Gray(img, floor(k_size/2));
     }
     int height = img.rows;
     int width = img.cols;
@@ -143,6 +175,8 @@ cv::Mat Conv_Gray_HD2(cv::Mat img, cv::Mat kernel, bool need_pad=true){
         }
         img = pads.clone();
     }
+    height = img.rows;
+    width = img.cols;
     cv::Mat out = cv::Mat::zeros(height-k_size+1, width-k_size+1, CV_64FC1);
     for(int i=0;i<height-k_size+1;i++){
         for(int j=0;j<width-k_size+1;j++){

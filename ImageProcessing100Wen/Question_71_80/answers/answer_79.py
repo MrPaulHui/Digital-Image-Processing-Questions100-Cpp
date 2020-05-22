@@ -46,13 +46,14 @@ def Gabor_filtering(gray, K_size=111, Sigma=10, Gamma=1.2, Lambda=10, Psi=0, ang
     H, W = gray.shape
 
     # padding
-    gray = np.pad(gray, (K_size//2, K_size//2), 'edge')
+    gray = np.pad(gray, (K_size//2, K_size//2), 'constant')
 
     # prepare out image
     out = np.zeros((H, W), dtype=np.float32)
 
     # get gabor filter
     gabor = Gabor_filter(K_size=K_size, Sigma=Sigma, Gamma=Gamma, Lambda=Lambda, Psi=0, angle=angle)
+    print(gabor)
         
     # filtering
     for y in range(H):
@@ -78,6 +79,7 @@ def Gabor_process(img):
     # each angle
     for i, A in enumerate(As):
         # gabor filtering
+        print(A)
         out = Gabor_filtering(gray, K_size=11, Sigma=1.5, Gamma=1.2, Lambda=3, angle=A)
 
         plt.subplot(1, 4, i+1)
