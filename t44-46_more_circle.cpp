@@ -40,24 +40,12 @@ void Hough_Transform_circle(cv::Mat img, int Rmin=0, int Rmax=0, int topN=10, bo
     else{
         rmax = Rmax;
     }
-    cout<<rmin<<" "<<rmax<<endl;
     int angle_range = 360;
     int a, b;
     double rad;
-    cout<<width+3*rmax<<" "<<height+3*rmax<<" "<<rmax-rmin<<endl;
-    //int hough_table[14090][13550][2500]={0};
-    cout<<"kym"<<endl;
-    //int hough_table[width+3*rmax][height+3*rmax][360][rmax-rmin] = {0};
-    int*** hough_table;
-    hough_table = new int **[width+3*rmax];
-    for(int i=0;i<width+3*rmax;i++){
-        hough_table[i] = new int *[height+3*rmax];
-        for(int j=0;j<height+3*rmax;j++){
-            hough_table[i][j] = new int [rmax-rmin];
-        }
-    }
-    cout<<hough_table[123][123][123]<<endl;
-    cout<<"wnm"<<endl;
+    vector<int> r_table(rmax-rmin);
+    vector<vector<int> > b_table(height+2*rmax, r_table);
+    vector<vector<vector<int> > > hough_table(width+2*rmax,b_table);
     
     for(int i=0;i<height;i++){
         for(int j=0;j<width;j++){
@@ -67,26 +55,15 @@ void Hough_Transform_circle(cv::Mat img, int Rmin=0, int Rmax=0, int topN=10, bo
                 for(int r=rmin;r<rmax;r++){
                     a = int(j-r*cos(rad));
                     b = int(i-r*sin(rad));
-                    //cout<<a<<" "<<b<<" "<<r<<endl;
                     hough_table[a+rmax][b+rmax][r-rmin] += 1;
-                    cout<<hough_table[a+rmax][b+rmax][r-rmin]<<endl;
                 }
             }
         }
     }
-    for(int i=0;i<width+3*rmax;i++){
-        for(int j=0;j<height+3*rmax;j++){
-            delete hough_table[i][j];
-        }
-        delete hough_table[i];
-    }
-    delete hough_table;
-    cout<<"niubile"<<endl;
-    //cout<<hough_table[123][123][123]<<endl;
-    //step 3. nms and get topN lines
-    /*
+
+    //step 3. nms and get topN circles
     bool flag;
-    vector<r_t_items> lines;
+    vector<r_t_items> circles;
     for(int i=0;i<width+2*rmax;i++){
         for(int j=0;j<height+2*rmax;j++){
             for(int k=0;k<rmax-rmin;k++){
@@ -96,7 +73,6 @@ void Hough_Transform_circle(cv::Mat img, int Rmin=0, int Rmax=0, int topN=10, bo
                         for(int dz=-1;dz<2;dz++){
                             if(dy==0 && dx==0 && dz==0) continue;
                             if(val_in(i+dy,0,width+2*rmax-1)==false || val_in(j+dx,0,height+2*rmax-1)==false || val_in(k+dz,0,rmax-rmin-1)) continue;
-                            cout<<"daozhele"<<endl;
                             if(hough_table[i][j][k]<hough_table[i+dy][j+dx][k+dz]){
                                 flag = false;
                                 break;
@@ -112,24 +88,24 @@ void Hough_Transform_circle(cv::Mat img, int Rmin=0, int Rmax=0, int topN=10, bo
                     line.a = i;
                     line.b = j;
                     line.r = k;
-                    lines.push_back(line);
+                    circles.push_back(line);
                 }
             }
         }
     }
-    sort(lines.begin(), lines.end(), cmp);
+    sort(circles.begin(), circles.end(), cmp);
 
     //这一部分C++的知识，参考：https://blog.csdn.net/qq_28584889/article/details/88379175
-    //step 4. draw lines
-    r_t_items line_item;
+    //step 4. draw circles
+    r_t_items circle_item;
     double aa,bb,rr;
     double _cos, _sin;
     int y1, y2;
     for(int i=0;i<topN;i++){
-        line_item = lines[i];
-        rr = line_item.r+rmin;
-        aa = line_item.a-rmax;
-        bb = line_item.b-rmax;
+        circle_item = circles[i];
+        rr = circle_item.r+rmin;
+        aa = circle_item.a-rmax;
+        bb = circle_item.b-rmax;
         for(int x=0;x<width;x++){
             y1 = bb + sqrt(rr*rr-(x-aa)*(x-aa));
             y2 = bb - sqrt(rr*rr-(x-aa)*(x-aa));
@@ -144,13 +120,10 @@ void Hough_Transform_circle(cv::Mat img, int Rmin=0, int Rmax=0, int topN=10, bo
     cv::imshow("hough_circle", img);
     cv::waitKey(0);
     cv::destroyAllWindows();
-    */
 }
 
 int main(){
-    cv::Mat img = cv::imread("../imgs/ball.jpg", cv::IMREAD_COLOR);
-    Hough_Transform_circle(img, 50, 300, 10);
-    //int hough_table[1109][1055][250]={0};
-    //cout<<hough_table[1][1][1]<<endl;
+    cv::Mat img = cv::imread("../imgs/football.jpg", cv::IMREAD_COLOR);
+    Hough_Transform_circle(img, 200, 300, 10);
 }
 

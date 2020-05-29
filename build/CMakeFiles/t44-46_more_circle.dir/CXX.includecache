@@ -9,6 +9,12 @@
 /home/paul/work/CV/DIP100/common.h
 math.h
 -
+vector
+-
+stdexcept
+-
+iostream
+-
 opencv2/imgproc/imgproc.hpp
 /home/paul/work/CV/DIP100/opencv2/imgproc/imgproc.hpp
 
