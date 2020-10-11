@@ -1,6 +1,8 @@
 # DIP100
 digital image processing questions and codes
 
+The 100 questions are from https://github.com/gzr2017/ImageProcessing100Wen
+
 | 知识点            | 对应题目                                                     |
 | ----------------- | ------------------------------------------------------------ |
 | 大津二值化算法    | [t4](https://github.com/MrPaulHui/DIP100/blob/master/t4.cpp) |
